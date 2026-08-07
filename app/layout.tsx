@@ -21,7 +21,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Apolonix Tech — Web Design & Development",
+  title: "Apolonix Tech",
   description:
     "The right website for your business—nothing more, nothing less. WordPress sites, custom-coded web apps, and business websites built by Apolonix Tech.",
 };
