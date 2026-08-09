@@ -98,8 +98,8 @@ export default function Contact() {
               defaultValue="Not sure yet"
             >
               <option>Basic business website</option>
-              <option>WordPress website</option>
-              <option>Hardcoded website</option>
+              <option>CMS - WordPress Website</option>
+              <option>SaaS Web Application</option>
               <option>Not sure yet</option>
             </select>
           </div>
