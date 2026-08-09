@@ -9,7 +9,7 @@ export default function Nav() {
     { href: "/#services", label: "Services" },
     { href: "/#pricing", label: "Pricing" },
     { href: "/website-types", label: "Website types" },
-    { href: "/#process", label: "Process" },
+    { href: "/about", label: "About" },
     { href: "/#contact", label: "Contact" },
   ];
 

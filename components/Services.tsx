@@ -6,7 +6,7 @@ const services = [
       "A clean, professional site that gets your business online fast: pages for what you do, who you are, and how to reach you.",
     bestFor: "New businesses and service providers who need a fast, credible web presence.",
     includes: [
-      "Up to 5 pages (home, about, services, contact, and one more)",
+      "Up to basic pages (home, about, services, contact, and one more)",
       "Mobile-responsive layout",
       "Contact form connected to your inbox",
       "Basic on-page SEO setup",
