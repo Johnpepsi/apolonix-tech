@@ -7,14 +7,7 @@ export default function Nav() {
 
   const links = [
     { href: "/#services", label: "Services" },
-<<<<<<< HEAD
     { href: "/#work", label: "Work" },
-=======
-<<<<<<< HEAD
-    { href: "/#work", label: "Work" },
-=======
->>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
->>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
     { href: "/#pricing", label: "Pricing" },
     { href: "/website-types", label: "Website types" },
     { href: "/about", label: "About" },

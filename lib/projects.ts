@@ -1,3 +1,4 @@
+
 export type Project = {
   name: string;
   type: string; // e.g. "Local plumbing business"
@@ -5,23 +6,11 @@ export type Project = {
   result?: string; // optional outcome line
   quote?: { text: string; author: string }; // optional client quote
   url?: string; // live site
-<<<<<<< HEAD
   linkLabel?: string; // text for the link, defaults to "Visit site"
-=======
-<<<<<<< HEAD
-  linkLabel?: string; // text for the link, defaults to "Visit site"
-=======
->>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
->>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
   image?: string; // screenshot in /public, e.g. "/work/acme.png"
 };
 
-// Add your finished projects here. While this list is empty, the
-// "Recent work" section is hidden, so no empty placeholder shows up.
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
+// Demo projects displayed in the Recent Work section.
 export const projects: Project[] = [
   {
     name: "Halo & Hue Salon",
@@ -64,9 +53,3 @@ export const projects: Project[] = [
     image: "/work/northlight-photography.png",
   },
 ];
-<<<<<<< HEAD
-=======
-=======
-export const projects: Project[] = [];
->>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
->>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
