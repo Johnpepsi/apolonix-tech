@@ -30,7 +30,7 @@ export default function About() {
           <div className="space-y-4 text-quiet">
             <p>
               Apolonix Tech is run by a single person: a full-stack
-              developer and IS/IT System Technician based in Regina,
+              developer and IS/IT System Specialist based in Regina,
               Saskatchewan. Day to day, that means building web-apps
               and fixing issues, keeping the servers and infrastructure behind
               them running, and doing cloud & systems administration work.
