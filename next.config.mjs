@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -13,3 +17,7 @@ const nextConfig = {
 };
 
 export default nextConfig;
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b

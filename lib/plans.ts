@@ -33,7 +33,15 @@ export const plans: Plan[] = [
     id: "wordpress",
     tag: "CMS",
     name: "WordPress Website",
+<<<<<<< HEAD
     price: "$700",
+=======
+<<<<<<< HEAD
+    price: "$700",
+=======
+    price: "$600",
+>>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
+>>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
     unit: "starting price",
     turnaround: "1–2 weeks",
     features: [
@@ -48,7 +56,15 @@ export const plans: Plan[] = [
     id: "custom",
     tag: "CUSTOM",
     name: "Custom-coded Website",
+<<<<<<< HEAD
     price: "$2,500",
+=======
+<<<<<<< HEAD
+    price: "$2,500",
+=======
+    price: "$1,200",
+>>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
+>>>>>>> c3eb42afaf04a985cb6e3183a39f1ddc837b574b
     unit: "starting price",
     turnaround: "4–8 weeks",
     features: [
