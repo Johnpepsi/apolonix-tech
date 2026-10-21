@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Northlight Photography</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: gallery-first, white walls. The hero is a contact sheet of twelve frames with one circled in red grease pencil. Film-edge frame numbers set in mono carry the subject through the page. */
+:root{
+  --bg:#F4F4F2; --surface:#FFFFFF; --ink:#141414; --mute:#5C5C5A; --line:#DADAD6;
+  --pencil:#D12F2F; --pencil-ink:#FFFFFF; --soft:#E9E9E5; --ok:#1F7A4D; --edge:#141414;
+  --display:'Syne','Trebuchet MS',system-ui,sans-serif;
+  --body:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#151514; --surface:#1E1E1C; --ink:#F1F1EE; --mute:#A8A8A3; --line:#34342F;
+    --pencil:#FF6B5E; --pencil-ink:#151514; --soft:#2A2A27; --ok:#5FD3A0; --edge:#0B0B0A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151514; --surface:#1E1E1C; --ink:#F1F1EE; --mute:#A8A8A3; --line:#34342F;
+  --pencil:#FF6B5E; --pencil-ink:#151514; --soft:#2A2A27; --ok:#5FD3A0; --edge:#0B0B0A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--body);-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.05;text-wrap:balance;letter-spacing:-.025em}
+h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800}
+h2{font-size:clamp(1.8rem,3.8vw,2.8rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:700;letter-spacing:-.015em}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea,summary{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pencil);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.muted{color:var(--mute)}
+.mono{font-family:var(--mono);font-size:.8rem;letter-spacing:.04em}
+.demo{background:var(--ink);color:var(--bg);font-size:.875rem}
+.demo .wrap{padding-block:9px}
+.demo a{text-decoration:underline;text-underline-offset:3px;font-weight:600}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:18px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 1.25rem var(--display);letter-spacing:-.03em}
+.aperture{width:30px;height:30px;flex:none}
+nav{display:flex;align-items:center;gap:24px}
+nav a.l{text-decoration:none;font-weight:500;color:var(--mute)}
+nav a.l:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600;text-decoration:none;cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.pen{background:var(--pencil);border-color:var(--pencil);color:var(--pencil-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{min-height:42px;padding:0 18px;font-size:.95rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+@media (max-width:760px){nav a.l{display:none}}
+
+.hero .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center;padding-block:40px 72px}
+.hero p.lead{font-size:1.15rem;color:var(--mute);margin:20px 0 28px;max-width:40ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.sheet{background:var(--edge);padding:14px 12px 10px;border-radius:6px;min-width:0}
+.sheet .strip{display:flex;justify-content:space-between;color:#c9c9c2;font:500 .68rem var(--mono);letter-spacing:.14em;padding:0 2px 8px}
+.sheet .frames{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.frame{position:relative;display:block;padding:0;border:0;background:#000;cursor:pointer;aspect-ratio:3/2;overflow:hidden;border-radius:2px;min-width:0}
+.frame:hover{outline:2px solid #fff}
+.frame svg{display:block;width:100%;height:100%}
+.frame .n{position:absolute;left:4px;bottom:2px;font:500 .6rem var(--mono);color:#fff;text-shadow:0 0 3px #000}
+.circled::after{content:"";position:absolute;inset:5% 4%;border:3px solid var(--pencil);border-radius:48% 52% 50% 50%/55% 45% 55% 45%;transform:rotate(-4deg);pointer-events:none}
+.sheet .foot{display:flex;justify-content:space-between;color:#c9c9c2;font:500 .68rem var(--mono);letter-spacing:.1em;padding-top:8px}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:28px;padding-block:24px 48px}.sheet .frames{grid-template-columns:repeat(3,1fr)}}
+
+section.block{padding-block:72px}
+section.alt{background:var(--surface);border-block:1px solid var(--line)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.head p{max-width:56ch}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:44px;padding:0 18px;border-radius:999px;border:2px solid var(--line);background:transparent;font-weight:600;cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.gallery{columns:3 260px;column-gap:14px}
+.shot{display:block;width:100%;margin:0 0 14px;padding:0;border:0;background:var(--soft);cursor:pointer;break-inside:avoid;border-radius:4px;overflow:hidden;position:relative}
+.shot svg{display:block;width:100%;height:auto}
+.shot .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.62));color:#fff;font-weight:600;text-align:left;opacity:0;transition:opacity .2s}
+.shot:hover .cap,.shot:focus-visible .cap{opacity:1}
+@media (hover:none){.shot .cap{opacity:1}}
+.fine{margin-top:16px;color:var(--mute);font-size:.9rem}
+
+.pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.pkg{background:var(--bg);border:2px solid var(--line);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pkg.pick{border-color:var(--pencil)}
+.pkg .price{font:800 2.3rem/1 var(--display);letter-spacing:-.03em}
+.pkg .price small{font:500 .95rem var(--body);color:var(--mute);letter-spacing:0}
+.pkg ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;flex:1}
+.pkg li{display:flex;gap:10px;font-size:.98rem}
+.pkg li::before{content:"";width:7px;height:7px;margin-top:9px;border-radius:50%;background:var(--pencil);flex:none}
+.pkg .tag{align-self:flex-start;font:500 .75rem var(--mono);letter-spacing:.06em;padding:3px 10px;border-radius:999px;background:var(--pencil);color:var(--pencil-ink)}
+
+.dates{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:36px;align-items:start}
+.cal{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:20px;min-width:0}
+.cal .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.cal .top b{font:700 1.15rem var(--display)}
+.cal .nav{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;font-size:1.1rem}
+.cal .nav:hover:not([disabled]){border-color:var(--ink)}
+.cal .nav[disabled]{opacity:.4;cursor:not-allowed}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow span{text-align:center;font:500 .72rem var(--mono);color:var(--mute);padding-bottom:6px}
+.d{aspect-ratio:1;min-height:42px;display:grid;place-items:center;border-radius:10px;border:2px solid transparent;background:var(--bg);cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums}
+.d:hover:not([disabled]){border-color:var(--ink)}
+.d.booked,.d[disabled]{background:transparent;color:var(--mute);opacity:.55;cursor:not-allowed;text-decoration:line-through}
+.d[disabled].blank{visibility:hidden}
+.d[aria-pressed="true"]{background:var(--pencil);border-color:var(--pencil);color:var(--pencil-ink)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;color:var(--mute);font-size:.9rem}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+.pick-box{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);min-height:56px}
+@media (max-width:860px){.dates{grid-template-columns:1fr}}
+
+.about{display:grid;grid-template-columns:.7fr 1.3fr;gap:44px;align-items:center}
+.me{aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--soft);max-width:360px;width:100%}
+.me svg{display:block;width:100%;height:100%}
+.about p+p{margin-top:14px}
+@media (max-width:760px){.about{grid-template-columns:1fr;gap:24px}}
+
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:60px;font-weight:600;padding:12px 0}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:500 1.4rem var(--mono);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 18px;color:var(--mute);max-width:64ch}
+.faq{max-width:760px}
+
+.contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
+.form{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:26px;min-width:0}
+.field{display:grid;gap:6px;margin-bottom:16px}
+.field label{font-weight:600}
+.field input,.field select,.field textarea{width:100%;min-height:50px;padding:11px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg)}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ink)}
+.field [aria-invalid="true"]{border-color:var(--pencil)}
+.err{color:var(--pencil);font-size:.9rem;font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.datefield{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:2px dashed var(--line);margin-bottom:16px;flex-wrap:wrap}
+.link{background:none;border:0;padding:6px 2px;color:var(--ink);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;min-height:40px}
+.sent .tick{width:56px;height:56px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:1.6rem;margin-bottom:14px}
+.ref{display:inline-block;margin:8px 0 16px;padding:6px 12px;border-radius:8px;background:var(--soft);font:500 1rem var(--mono);letter-spacing:.06em}
+.recap{margin:16px 0;padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:grid;gap:8px}
+.recap div{display:flex;justify-content:space-between;gap:16px}
+.recap dt{color:var(--mute)}
+.recap dd{margin:0;font-weight:600;text-align:right}
+@media (max-width:860px){.contact{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.form{padding:20px}}
+footer{padding-block:28px 40px;color:var(--mute);font-size:.92rem;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+dialog.lb{border:0;padding:0;background:var(--edge);color:#fff;width:min(1100px,100%);max-height:100%;border-radius:12px;overflow:hidden}
+dialog.lb::backdrop{background:rgba(5,5,5,.8)}
+.lbx{display:grid;grid-template-rows:auto 1fr auto;max-height:100vh;max-height:100dvh;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.lbx .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font:500 .8rem var(--mono);letter-spacing:.08em;color:#c9c9c2}
+.lbx .stage{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 10px;min-height:0;touch-action:pan-y}
+.lbx .img{flex:1;min-width:0;height:calc(100vh - 190px);height:calc(100dvh - 190px)}
+.lbx .img svg{display:block;width:100%;height:100%}
+.lbx .go,.lbx .x{width:48px;height:48px;border-radius:50%;border:2px solid #555;background:transparent;color:#fff;font-size:1.3rem;cursor:pointer;flex:none}
+.lbx .go:hover,.lbx .x:hover{border-color:#fff}
+.lbx .cap{padding:12px 18px 16px;text-align:center}
+.lbx .cap b{display:block;font:700 1.1rem var(--display)}
+.lbx .cap span{color:#c9c9c2;font-size:.92rem}
+@media (max-width:560px){.lbx .go{position:absolute;bottom:64px;z-index:2;background:rgba(0,0,0,.5)}.lbx .go.prev{left:12px}.lbx .go.next{right:12px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter></svg>
+
+<div class="demo"><div class="wrap"><a href="/">&larr; Back to Apolonix Tech</a> &nbsp;Demo project. Northlight Photography is a fictional studio, and the sample images are generated illustrations. Nothing you submit is sent.</div></div>
+
+<header><div class="wrap">
+  <a class="brand" href="#top">
+    <svg class="aperture" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15 2.5l5.5 9.5M27 10l-11 .5M25 22l-5.5-9.5M15 27.5L9.5 18M3 20l11-.5M5 8l5.5 9.5" stroke="var(--pencil)" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+    Northlight
+  </a>
+  <nav aria-label="Main"><a class="l" href="#work">Work</a><a class="l" href="#packages">Packages</a><a class="l" href="#dates">Dates</a><a class="l" href="#about">About</a><a class="btn pen sm" href="#dates">Check dates</a></nav>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Wedding and portrait photography for people who would rather be in the moment.</h1>
+    <p class="lead">Northlight is a two-person studio. We photograph weddings, families and portraits in natural light, and we deliver a finished gallery you will actually print.</p>
+    <div class="ctas"><a class="btn pen" href="#dates">Check your date</a><a class="btn ghost" href="#work">See the work</a></div>
+  </div>
+  <div class="sheet" aria-label="Contact sheet of twelve sample frames">
+    <div class="strip" aria-hidden="true"><span>NORTHLIGHT 400</span><span>ROLL 07</span><span>&rarr; 1 &nbsp; 2 &nbsp; 3 &nbsp; 4</span></div>
+    <div class="frames" id="sheetFrames"></div>
+    <div class="foot" aria-hidden="true"><span>CONTACT SHEET</span><span>PICKS CIRCLED</span></div>
+  </div>
+</div></section>
+
+<section class="block alt" id="work"><div class="wrap">
+  <div class="head"><div><h2>Selected work</h2><p class="muted" style="margin-top:8px">Tap any frame to view it larger, then use the arrows or your keyboard to move through the set.</p></div><div class="chips" id="chips" role="group" aria-label="Filter the portfolio"></div></div>
+  <div class="gallery" id="gallery"></div>
+  <p class="fine">The images here are generated illustrations that stand in for real photographs.</p>
+</div></section>
+
+<section class="block" id="packages"><div class="wrap">
+  <div class="head"><div><h2>Packages</h2><p class="muted" style="margin-top:8px">Every package includes a private online gallery, a print release and a planning call before the day.</p></div></div>
+  <div class="pkgs" id="pkgs"></div>
+</div></section>
+
+<section class="block alt" id="dates"><div class="wrap dates">
+  <div class="cal" id="cal"></div>
+  <div>
+    <h2>Is your date free?</h2>
+    <p class="muted" style="margin-top:12px">Pick a day to see if we are open. Weekend wedding dates fill up 9 to 12 months ahead, and weekday sessions are usually available within two weeks.</p>
+    <div class="pick-box" id="pickBox" role="status">Choose a day on the calendar.</div>
+  </div>
+</div></section>
+
+<section class="block" id="about"><div class="wrap about">
+  <div class="me" id="meArt" role="img" aria-label="Sample illustration of a photographer silhouetted against a sunrise"></div>
+  <div>
+    <h2>Hello, we are Alex and Sam.</h2>
+    <p style="margin-top:16px">We have photographed weddings and families for ten years, and we still get nervous before every first frame. That is probably why people tell us they forgot we were there.</p>
+    <p class="muted">We shoot in natural light, direct only when you want direction, and edit every photograph by hand. You get a sneak peek within 48 hours and the full gallery within weeks, not months.</p>
+  </div>
+</div></section>
+
+<section class="block alt"><div class="wrap">
+  <div class="head"><h2>Common questions</h2></div>
+  <div class="faq">
+    <details><summary>When will I get my photos?</summary><p>A sneak peek of 10 to 20 images arrives within 48 hours. Full wedding galleries are ready in 6 weeks. Portrait and family galleries are ready in 2 weeks.</p></details>
+    <details><summary>How do I book a date?</summary><p>A signed agreement and a 30% retainer hold your date. The balance is due 2 weeks before a wedding, and on the day for portrait and family sessions.</p></details>
+    <details><summary>Do you travel?</summary><p>Yes. Sessions within 50 km of the studio have no travel fee. Beyond that, travel is $0.60 per kilometre, and we can quote overnight travel for destination weddings.</p></details>
+    <details><summary>Can I print the photos?</summary><p>Every gallery includes a print release, so you can print anywhere. You can also order prints and albums straight from your gallery.</p></details>
+    <details><summary>What happens if it rains?</summary><p>We reschedule portrait and family sessions at no cost. For weddings, we plan covered backup spots with you during the planning call.</p></details>
+  </div>
+</div></section>
+
+<section class="block" id="contact"><div class="wrap contact">
+  <div>
+    <h2>Tell us about your day</h2>
+    <p class="muted" style="margin-top:12px">Share a few details and we will reply within two business days with availability and a quote.</p>
+  </div>
+  <div class="form" id="formBox"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>&copy; 2026 Northlight Photography (fictional)</span><span>Portfolio website demo built by Apolonix Tech</span></div></footer>
+
+<dialog class="lb" id="lb" aria-label="Photo viewer"></dialog>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var pad=function(n){return String(n).padStart(2,'0')};
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- generated sample images ---------- */
+  function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)|0;var t=Math.imul(a^a>>>15,1|a);t=(t+Math.imul(t^t>>>7,61|t))^t;return((t^t>>>14)>>>0)/4294967296}}
+  var PAL=[
+    ['#F7B267','#FBE3C0','#FFF3D2','#E08A6D','#A5586B','#4A2F45'],
+    ['#F4A6B7','#FBDDE2','#FFF1EE','#D98CA0','#9B5C84','#4A3156'],
+    ['#2E4A7D','#F0A58F','#FFE5C2','#4C5B8C','#2E3A66','#161B38'],
+    ['#9CC5B0','#E4F0E4','#FFFBE8','#6FA38A','#3F7563','#1E3F39'],
+    ['#6B5B95','#F4B7A5','#FFE9C7','#7C6AA6','#4B3F77','#241E40'],
+    ['#8E9AA6','#E4E6E8','#FFFFFF','#6E7B88','#4A5560','#22282E']
+  ];
+  var DIM={l:[600,400],p:[400,500],s:[500,500]};
+  function person(x,by,h,c,kid){
+    var r=h*.11,bw=h*(kid?.3:.27);
+    return '<g fill="'+c+'"><circle cx="'+x+'" cy="'+(by-h+r)+'" r="'+r.toFixed(1)+'"/><path d="M'+(x-bw/2).toFixed(1)+' '+by+'v'+(-h*.5).toFixed(1)+'q0 '+(-h*.11).toFixed(1)+' '+(bw/2).toFixed(1)+' '+(-h*.11).toFixed(1)+'t'+(bw/2).toFixed(1)+' '+(h*.11).toFixed(1)+'v'+(h*.5).toFixed(1)+'z"/></g>';
+  }
+  function hills(R,W,H,p,count,y0){
+    var out='';
+    for(var i=0;i<count;i++){
+      var base=H*(y0+i*.11),amp=H*(.05+R()*.04),ph=R()*6.28,fr=.004+R()*.004,pts='M0 '+H+' L0 '+base.toFixed(1);
+      for(var x=0;x<W;x+=12)pts+=' L'+x+' '+(base+Math.sin(x*fr*6.28+ph)*amp).toFixed(1);pts+=' L'+W+' '+(base+Math.sin(W*fr*6.28+ph)*amp).toFixed(1);
+      out+='<path d="'+pts+' L'+W+' '+H+'z" fill="'+p[3+Math.min(i,2)]+'"/>';
+    }
+    return out;
+  }
+  function scene(it,idp,fit){
+    var d=DIM[it.r],W=d[0],H=d[1],R=rng(it.seed),p=PAL[it.pal%PAL.length],g='g'+idp;
+    var s='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid '+(fit?'meet':'slice')+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(it.alt)+'"><defs><linearGradient id="'+g+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+p[0]+'"/><stop offset="1" stop-color="'+p[1]+'"/></linearGradient></defs><rect width="'+W+'" height="'+H+'" fill="url(#'+g+')"/>';
+    var k=it.kind,i,x,y;
+    if(k==='hills'){
+      s+='<circle cx="'+(W*(.25+R()*.5)).toFixed(0)+'" cy="'+(H*.38).toFixed(0)+'" r="'+(H*.09).toFixed(0)+'" fill="'+p[2]+'"/>';
+      s+=hills(R,W,H,p,3,.56);
+      var px=W*(.3+R()*.4);s+=person(px,H*.74,H*.2,p[5])+person(px+H*.07,H*.74,H*.18,p[5]);
+    }else if(k==='arch'){
+      s+='<rect y="'+(H*.78)+'" width="'+W+'" height="'+(H*.22)+'" fill="'+p[4]+'"/>';
+      var cx=W/2,rr=W*.24,top=H*.2;
+      s+='<path d="M'+(cx-rr)+' '+(H*.78)+'V'+(top+rr)+'a'+rr+' '+rr+' 0 0 1 '+(rr*2)+' 0V'+(H*.78)+'" fill="none" stroke="'+p[5]+'" stroke-width="'+(W*.012)+'"/>';
+      var fl=[p[3],p[2],'#fff'];
+      for(i=0;i<46;i++){var a=Math.PI*(1-i/45),fx=cx+Math.cos(a)*rr+(R()-.5)*14,fy=top+rr-Math.sin(a)*rr+(R()-.5)*14;s+='<circle cx="'+fx.toFixed(0)+'" cy="'+fy.toFixed(0)+'" r="'+(5+R()*8).toFixed(0)+'" fill="'+fl[i%3]+'" opacity=".92"/>'}
+      s+=person(cx-W*.04,H*.9,H*.3,p[5])+person(cx+W*.04,H*.9,H*.28,p[5]);
+    }else if(k==='city'){
+      s+='<circle cx="'+(W*(.7+R()*.2)).toFixed(0)+'" cy="'+(H*.25).toFixed(0)+'" r="'+(H*.06)+'" fill="'+p[2]+'" opacity=".9"/>';
+      for(var layer=0;layer<2;layer++){
+        var bx=0;while(bx<W){var bw=22+R()*40,bh=H*(layer?.28:.4)*(.5+R()*.8);
+          s+='<rect x="'+bx.toFixed(0)+'" y="'+(H-bh).toFixed(0)+'" width="'+bw.toFixed(0)+'" height="'+bh.toFixed(0)+'" fill="'+p[layer?5:4]+'"/>';
+          if(layer){for(var wy=H-bh+10;wy<H-8;wy+=16)for(var wx=bx+6;wx<bx+bw-8;wx+=12)if(R()>.55)s+='<rect x="'+wx.toFixed(0)+'" y="'+wy.toFixed(0)+'" width="5" height="7" fill="'+p[2]+'"/>'}
+          bx+=bw+2}
+      }
+      s+=person(W*.5,H,H*.26,'#0b0b12')+person(W*.5+H*.07,H,H*.24,'#0b0b12');
+    }else if(k==='portrait'){
+      for(i=0;i<14;i++){s+='<circle cx="'+(R()*W).toFixed(0)+'" cy="'+(R()*H*.8).toFixed(0)+'" r="'+(14+R()*34).toFixed(0)+'" fill="'+p[2]+'" opacity="'+(.18+R()*.3).toFixed(2)+'"/>'}
+      var hx=W*.5,hy=H*.42,hr=H*.13;
+      s+='<g fill="'+p[5]+'"><path d="M'+(hx-W*.32)+' '+H+'C'+(hx-W*.3)+' '+(H*.7)+' '+(hx-hr*1.3)+' '+(H*.66)+' '+hx+' '+(H*.66)+'S'+(hx+W*.3)+' '+(H*.7)+' '+(hx+W*.32)+' '+H+'z"/><rect x="'+(hx-hr*.35)+'" y="'+(hy+hr*.7)+'" width="'+(hr*.7)+'" height="'+(H*.2)+'"/><ellipse cx="'+hx+'" cy="'+hy+'" rx="'+(hr*.82)+'" ry="'+hr+'"/><path d="M'+(hx-hr*.95)+' '+(hy+hr*.2)+'C'+(hx-hr*1.1)+' '+(hy-hr*1.4)+' '+(hx+hr*1.1)+' '+(hy-hr*1.4)+' '+(hx+hr*.95)+' '+(hy+hr*.2)+'C'+(hx+hr*.7)+' '+(hy-hr*.4)+' '+(hx-hr*.7)+' '+(hy-hr*.4)+' '+(hx-hr*.95)+' '+(hy+hr*.2)+'z"/></g>';
+    }else if(k==='family'){
+      s+='<circle cx="'+(W*.78)+'" cy="'+(H*.22)+'" r="'+(H*.07)+'" fill="'+p[2]+'"/>'+hills(R,W,H,p,2,.62);
+      var tx=W*.2;s+='<rect x="'+(tx-5)+'" y="'+(H*.34)+'" width="10" height="'+(H*.36)+'" fill="'+p[5]+'"/>';
+      for(i=0;i<7;i++)s+='<circle cx="'+(tx+(R()-.5)*80).toFixed(0)+'" cy="'+(H*.36+(R()-.5)*50).toFixed(0)+'" r="'+(26+R()*20).toFixed(0)+'" fill="'+p[4]+'"/>';
+      var fx0=W*.5;s+=person(fx0,H*.86,H*.3,p[5])+person(fx0+H*.09,H*.86,H*.28,p[5])+person(fx0+H*.19,H*.86,H*.16,p[5],true)+person(fx0-H*.08,H*.86,H*.13,p[5],true);
+    }else{
+      s+='<rect width="'+W+'" height="'+H+'" fill="'+p[5]+'" opacity=".55"/>';
+      var cy0=H*.22;s+='<path d="M0 '+cy0+'Q'+(W/2)+' '+(cy0+H*.2)+' '+W+' '+cy0+'" fill="none" stroke="'+p[5]+'" stroke-width="2"/>';
+      for(i=0;i<=18;i++){var t=i/18,bx2=W*t,by=cy0+H*.2*2*t*(1-t)*1;s+='<circle cx="'+bx2.toFixed(0)+'" cy="'+(by+6).toFixed(0)+'" r="7" fill="'+p[2]+'"/><circle cx="'+bx2.toFixed(0)+'" cy="'+(by+6).toFixed(0)+'" r="16" fill="'+p[2]+'" opacity=".25"/>'}
+      for(i=0;i<9;i++)s+=person(W*(.06+i*.115)+(R()-.5)*18,H+8,H*(.2+R()*.1),'#0a0a0e');
+    }
+    return s+'<rect width="'+W+'" height="'+H+'" filter="url(#grain)" opacity=".14" style="mix-blend-mode:multiply"/></svg>';
+  }
+
+  var WORK=[
+    {id:1,cat:'Weddings',kind:'arch',pal:1,seed:11,r:'p',title:'Garden arch ceremony',alt:'Sample illustration of a couple under a floral wedding arch'},
+    {id:2,cat:'Weddings',kind:'hills',pal:0,seed:12,r:'l',title:'Vows at golden hour',alt:'Sample illustration of a couple on a hill at golden hour'},
+    {id:3,cat:'Portraits',kind:'portrait',pal:4,seed:13,r:'p',title:'Studio portrait, soft light',alt:'Sample illustration of a head-and-shoulders portrait with soft bokeh'},
+    {id:4,cat:'Families',kind:'family',pal:3,seed:14,r:'l',title:'Family by the old oak',alt:'Sample illustration of a family of four beside a large tree'},
+    {id:5,cat:'Events',kind:'event',pal:2,seed:15,r:'l',title:'First dance, string lights',alt:'Sample illustration of a crowd under string lights at dusk'},
+    {id:6,cat:'Weddings',kind:'city',pal:2,seed:16,r:'s',title:'Skyline at blue hour',alt:'Sample illustration of a couple against a city skyline at dusk'},
+    {id:7,cat:'Portraits',kind:'portrait',pal:5,seed:17,r:'s',title:'Black and white portrait',alt:'Sample illustration of a monochrome portrait'},
+    {id:8,cat:'Families',kind:'hills',pal:3,seed:18,r:'p',title:'Spring walk',alt:'Sample illustration of two people walking over green hills'},
+    {id:9,cat:'Weddings',kind:'arch',pal:0,seed:19,r:'s',title:'Ceremony, warm light',alt:'Sample illustration of a wedding arch in warm evening light'},
+    {id:10,cat:'Events',kind:'event',pal:4,seed:20,r:'p',title:'Reception crowd',alt:'Sample illustration of a reception crowd beneath hanging lights'},
+    {id:11,cat:'Families',kind:'family',pal:1,seed:21,r:'p',title:'Sunset family session',alt:'Sample illustration of a family with children at sunset'},
+    {id:12,cat:'Portraits',kind:'portrait',pal:0,seed:22,r:'l',title:'Personal branding portrait',alt:'Sample illustration of a portrait against warm background lights'},
+    {id:13,cat:'Weddings',kind:'hills',pal:4,seed:23,r:'p',title:'Elopement on the ridge',alt:'Sample illustration of an elopement couple on a mountain ridge'},
+    {id:14,cat:'Events',kind:'city',pal:5,seed:24,r:'l',title:'Rooftop party',alt:'Sample illustration of a rooftop gathering against a grey city'},
+    {id:15,cat:'Families',kind:'hills',pal:1,seed:25,r:'l',title:'Golden fields',alt:'Sample illustration of a family silhouette across pink hills'},
+    {id:16,cat:'Weddings',kind:'arch',pal:3,seed:26,r:'l',title:'Greenhouse ceremony',alt:'Sample illustration of an arch of greenery and flowers'}
+  ];
+  var CATS=['All','Weddings','Portraits','Families','Events'];
+  var filter='All',cur=0,list=[];
+
+  function renderSheet(){
+    var frames=[WORK[1],WORK[0],WORK[3],WORK[4],WORK[5],WORK[2],WORK[7],WORK[11],WORK[12],WORK[13],WORK[14],WORK[8]];
+    $('sheetFrames').innerHTML=frames.map(function(w,i){
+      return '<button class="frame'+(i===5?' circled':'')+'" data-a="open" data-id="'+w.id+'" aria-label="View '+esc(w.title)+'">'+scene(Object.assign({},w,{r:'l'}),'h'+i)+'<span class="n" aria-hidden="true">'+(i+1)+'A</span></button>';
+    }).join('');
+  }
+  function renderChips(){
+    $('chips').innerHTML=CATS.map(function(c){return '<button class="chip" data-a="filter" data-c="'+c+'" aria-pressed="'+(filter===c)+'">'+c+'</button>'}).join('');
+  }
+  function renderGallery(){
+    list=WORK.filter(function(w){return filter==='All'||w.cat===filter});
+    $('gallery').innerHTML=list.map(function(w,i){
+      return '<button class="shot" data-a="open" data-id="'+w.id+'" aria-label="View '+esc(w.title)+', '+w.cat.toLowerCase()+'">'+scene(w,'g'+w.id)+'<span class="cap">'+esc(w.title)+'</span></button>';
+    }).join('');
+  }
+
+  /* lightbox */
+  function lbRender(){
+    var w=list[cur];
+    $('lb').innerHTML='<div class="lbx"><div class="bar"><span>'+pad(cur+1)+' / '+pad(list.length)+' &middot; '+esc(w.cat.toUpperCase())+'</span><button class="x" data-a="close-lb" aria-label="Close viewer">&times;</button></div>'+
+      '<div class="stage"><button class="go prev" data-a="prev" aria-label="Previous photo">&lsaquo;</button><div class="img">'+scene(w,'lb',true)+'</div><button class="go next" data-a="next" aria-label="Next photo">&rsaquo;</button></div>'+
+      '<div class="cap"><b>'+esc(w.title)+'</b><span>Sample illustration</span></div></div>';
+  }
+  function openLb(id){
+    if(!list.some(function(w){return w.id===id})){filter='All';renderChips();renderGallery()}
+    cur=list.findIndex(function(w){return w.id===id});lbRender();if(!$('lb').open)$('lb').showModal();
+  }
+  function step(d){cur=(cur+d+list.length)%list.length;lbRender();var b=document.querySelector('#lb .go.'+(d>0?'next':'prev'));if(b)b.focus()}
+
+  /* packages */
+  var PKGS=[
+    {name:'Mini session',price:'$175',unit:'30 minutes',type:'Portrait session',items:['1 location','15 edited images','Gallery in 1 week']},
+    {name:'Portrait or family',price:'$350',unit:'1 hour',type:'Family session',items:['Up to 2 locations','40 edited images','Gallery in 2 weeks','Outfit planning guide'],pick:true},
+    {name:'Elopement',price:'$1,200',unit:'2 hours',type:'Elopement',items:['Ceremony and portraits','60 edited images','Gallery in 3 weeks','Location scouting help']},
+    {name:'Wedding day',price:'$2,800',unit:'8 hours',type:'Wedding',items:['Two photographers','500+ edited images','Engagement session included','Gallery in 6 weeks']}
+  ];
+  function renderPkgs(){
+    $('pkgs').innerHTML=PKGS.map(function(p){
+      return '<article class="pkg'+(p.pick?' pick':'')+'">'+(p.pick?'<span class="tag">MOST BOOKED</span>':'')+'<h3>'+esc(p.name)+'</h3><div class="price">'+p.price+' <small>/ '+esc(p.unit)+'</small></div><ul>'+p.items.map(function(i){return '<li>'+esc(i)+'</li>'}).join('')+'</ul><button class="btn '+(p.pick?'pen':'ghost')+'" data-a="enquire" data-type="'+esc(p.type)+'">Ask about this</button></article>';
+    }).join('');
+  }
+
+  /* availability calendar (sample data) */
+  var hash=function(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
+  var key=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var today=new Date();today=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+  var monthOff=0,selDate=null,MAXM=11;
+  function booked(d){var w=d.getDay(),chance=(w===6)?66:(w===0?42:(w===5?30:14));return hash('nl'+key(d))%100<chance}
+  function fmtDate(k){var p=k.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]).toLocaleDateString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}
+  function renderCal(){
+    var first=new Date(today.getFullYear(),today.getMonth()+monthOff,1),dim=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();
+    var h='<div class="top"><button class="nav" data-a="mprev" aria-label="Previous month"'+(monthOff===0?' disabled':'')+'>&lsaquo;</button><b>'+first.toLocaleDateString('en-CA',{month:'long',year:'numeric'})+'</b><button class="nav" data-a="mnext" aria-label="Next month"'+(monthOff>=MAXM?' disabled':'')+'>&rsaquo;</button></div>';
+    h+='<div class="dow" aria-hidden="true">'+['S','M','T','W','T','F','S'].map(function(x){return '<span>'+x+'</span>'}).join('')+'</div><div class="days" role="group" aria-label="Days">';
+    for(var b=0;b<first.getDay();b++)h+='<button class="d blank" disabled aria-hidden="true" tabindex="-1"></button>';
+    for(var d=1;d<=dim;d++){
+      var dt=new Date(first.getFullYear(),first.getMonth(),d),k=key(dt),past=dt<=today,bk=!past&&booked(dt);
+      h+='<button class="d'+(bk?' booked':'')+'" data-a="pickday" data-d="'+k+'" aria-pressed="'+(selDate===k)+'"'+((past||bk)?' disabled':'')+' aria-label="'+fmtDate(k)+(past?', past':bk?', booked':', available')+'">'+d+'</button>';
+    }
+    h+='</div><div class="legend"><span><i style="background:var(--bg);border:1px solid var(--line)"></i>Available</span><span><i style="background:var(--pencil)"></i>Selected</span><span><i style="background:var(--line)"></i>Booked</span></div>';
+    $('cal').innerHTML=h;
+    $('pickBox').innerHTML=selDate?'<b>'+fmtDate(selDate)+' is available.</b><br><button class="link" data-a="enquire" data-type="">Inquire about this date</button>':'Choose a day on the calendar.';
+  }
+
+  /* inquiry form */
+  var TYPES=['Wedding','Elopement','Engagement','Portrait session','Family session','Event','Not sure yet'];
+  var F={name:'',email:'',type:'Not sure yet',place:'',msg:'',errors:{},sent:null};
+  function field(id,label,type,extra,opt){
+    var e=F.errors[id],v=F[id]||'';
+    var ctl=type==='textarea'?'<textarea id="f-'+id+'">'+esc(v)+'</textarea>':'<input id="f-'+id+'" type="'+type+'" value="'+esc(v)+'"'+(extra||'')+(e?' aria-invalid="true" aria-describedby="e-'+id+'"':'')+'>';
+    return '<div class="field"><label for="f-'+id+'">'+label+(opt?' <span class="muted" style="font-weight:400">(optional)</span>':'')+'</label>'+ctl+(e?'<span class="err" id="e-'+id+'">'+e+'</span>':'')+'</div>';
+  }
+  function renderForm(){
+    var box=$('formBox');
+    if(F.sent){
+      var s=F.sent;
+      box.innerHTML='<div class="sent"><div class="tick" aria-hidden="true">&#10003;</div><h3 id="sentH" tabindex="-1">Thank you, '+esc(s.name.split(' ')[0])+'</h3><div class="ref">'+s.ref+'</div><p>We will reply within two business days with availability and a quote.</p>'+
+        '<dl class="recap"><div><dt>Session</dt><dd>'+esc(s.type)+'</dd></div><div><dt>Date</dt><dd>'+(s.date?esc(fmtDate(s.date)):'Flexible')+'</dd></div><div><dt>Reply to</dt><dd>'+esc(s.email)+'</dd></div></dl><p class="muted" style="margin-bottom:16px">This is a demo, so nothing was sent.</p><button class="btn ghost" data-a="again">Send another inquiry</button></div>';
+      return;
+    }
+    box.innerHTML='<form id="qForm" novalidate><div class="grid2">'+field('name','Your name','text',' autocomplete="name"')+field('email','Email','email',' autocomplete="email" inputmode="email"')+'</div>'+
+      '<div class="field"><label for="f-type">What are you planning?</label><select id="f-type">'+TYPES.map(function(t){return '<option'+(t===F.type?' selected':'')+'>'+t+'</option>'}).join('')+'</select></div>'+
+      '<div class="datefield"><span><b>Date:</b> '+(selDate?esc(fmtDate(selDate)):'Flexible')+'</span><span>'+(selDate?'<button type="button" class="link" data-a="cleardate">Clear</button> ':'')+'<a class="link" href="#dates">'+(selDate?'Change':'Pick a date')+'</a></span></div>'+
+      field('place','Location or venue','text','',true)+field('msg','Tell us about your day','textarea','',true)+
+      '<button class="btn pen" type="submit" style="width:100%">Send inquiry</button></form>';
+  }
+  function submitForm(){
+    var e={};
+    if(!F.name.trim())e.name='Enter your name.';
+    if(!F.email.trim())e.email='Enter your email address.';
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(F.email.trim()))e.email='Enter an email like name@example.com.';
+    F.errors=e;
+    if(Object.keys(e).length){renderForm();var el=$('f-'+Object.keys(e)[0]);if(el)el.focus();return}
+    F.sent={name:F.name.trim(),email:F.email.trim(),type:F.type,date:selDate,ref:'NL-'+(1000+Math.floor(Math.random()*9000))};
+    renderForm();var h=$('sentH');if(h)h.focus();
+  }
+  function enquire(type){
+    F.sent=null;if(type&&TYPES.indexOf(type)>-1)F.type=type;
+    renderForm();$('contact').scrollIntoView({behavior:reduced?'auto':'smooth'});
+    setTimeout(function(){var n=$('f-name');if(n)n.focus({preventScroll:true})},350);
+  }
+
+  document.addEventListener('click',function(e){
+    if(e.target.tagName==='DIALOG'){e.target.close();return}
+    var t=e.target.closest('[data-a]');if(!t||t.disabled)return;
+    var a=t.dataset.a;
+    if(a==='filter'){filter=t.dataset.c;renderChips();renderGallery()}
+    else if(a==='open'){openLb(Number(t.dataset.id))}
+    else if(a==='close-lb'){$('lb').close()}
+    else if(a==='prev'){step(-1)}
+    else if(a==='next'){step(1)}
+    else if(a==='mprev'){monthOff=Math.max(0,monthOff-1);renderCal()}
+    else if(a==='mnext'){monthOff=Math.min(MAXM,monthOff+1);renderCal()}
+    else if(a==='pickday'){selDate=selDate===t.dataset.d?null:t.dataset.d;renderCal();if(!F.sent)renderFormKeep()}
+    else if(a==='enquire'){enquire(t.dataset.type)}
+    else if(a==='cleardate'){selDate=null;renderCal();renderForm()}
+    else if(a==='again'){F={name:'',email:'',type:'Not sure yet',place:'',msg:'',errors:{},sent:null};renderForm()}
+  });
+  function renderFormKeep(){renderForm()}
+  document.addEventListener('keydown',function(e){
+    if(!$('lb').open)return;
+    if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);
+  });
+  var sx=null;
+  document.addEventListener('pointerdown',function(e){if($('lb').open&&e.target.closest('.img'))sx=e.clientX});
+  document.addEventListener('pointerup',function(e){if(sx===null)return;var dx=e.clientX-sx;sx=null;if(Math.abs(dx)>50)step(dx<0?1:-1)});
+  document.addEventListener('input',function(e){var id=e.target.id;if(id&&id.indexOf('f-')===0)F[id.slice(2)]=e.target.value});
+  document.addEventListener('change',function(e){if(e.target.id==='f-type')F.type=e.target.value});
+  document.addEventListener('submit',function(e){e.preventDefault();if(e.target.id==='qForm')submitForm()});
+
+  /* about art */
+  $('meArt').innerHTML=scene({kind:'hills',pal:2,seed:31,r:'p',alt:'Sample illustration of a photographer silhouetted against a sunrise'},'me');
+
+  renderSheet();renderChips();renderGallery();renderPkgs();renderCal();renderForm();
+})();
+</script>
+</body>
+</html>

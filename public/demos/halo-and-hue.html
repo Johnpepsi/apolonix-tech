@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Halo & Hue Salon</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one calm page. The hero pairs the pitch with live next openings; booking is a 4-step panel beside a running summary. */
+:root{
+  --bg:#FAF6FB; --surface:#FFFFFF; --ink:#2A1B3D; --mute:#675A78; --line:#E4D9EC;
+  --brand:#6B3FD4; --brand-ink:#FFFFFF; --soft:#EDE3FB; --accent:#FF8E72; --ok:#1F8A5B; --bad:#B3261E;
+  --display:'Unbounded','Trebuchet MS',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#160F20; --surface:#21172F; --ink:#F3EAFB; --mute:#B6A7C9; --line:#382A4D;
+    --brand:#A98BFF; --brand-ink:#160F20; --soft:#2F2247; --accent:#FF9C84; --ok:#5FD3A0; --bad:#FF8A80;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#160F20; --surface:#21172F; --ink:#F3EAFB; --mute:#B6A7C9; --line:#382A4D;
+  --brand:#A98BFF; --brand-ink:#160F20; --soft:#2F2247; --accent:#FF9C84; --ok:#5FD3A0; --bad:#FF8A80;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--body);-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.12;text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(2.1rem,5.4vw,3.7rem);font-weight:700}
+h2{font-size:clamp(1.55rem,3.4vw,2.3rem);font-weight:700}
+h3{font-size:1.05rem;font-weight:500;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.muted{color:var(--mute)}
+.demo{background:var(--ink);color:var(--bg);font-size:.875rem}
+.demo .wrap{padding-block:9px}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 1.05rem var(--display);letter-spacing:-.02em}
+.mark{position:relative;width:30px;height:30px;flex:none}
+.mark::before,.mark::after{content:"";position:absolute;width:20px;height:20px;border-radius:50%}
+.mark::before{left:0;top:0;border:3px solid var(--brand)}
+.mark::after{right:0;bottom:0;background:var(--accent);opacity:.9}
+nav{display:flex;align-items:center;gap:22px}
+nav a{text-decoration:none;font-weight:500;color:var(--mute)}
+nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:12px;border:2px solid var(--brand);background:var(--brand);color:var(--brand-ink);font-weight:700;text-decoration:none;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--brand)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn.sm{min-height:40px;padding:0 16px;font-size:.9rem}
+@media (max-width:640px){nav a:not(.btn){display:none}}
+
+.hero{background:radial-gradient(900px 380px at 85% -10%,var(--soft),transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-block:56px 72px}
+.hero p.lead{font-size:1.15rem;color:var(--mute);margin:20px 0 28px;max-width:46ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.open{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;min-width:0}
+.open h2{font-family:var(--body);font-size:1rem;font-weight:700;letter-spacing:0}
+.open ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.open li a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);text-decoration:none}
+.open li a:hover{border-color:var(--brand)}
+.open .when{font-weight:700}
+.open .who{color:var(--mute);font-size:.9rem;text-align:right}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:32px;padding-block:36px 48px}}
+
+section.block{padding-block:72px}
+section.alt{background:var(--surface);border-block:1px solid var(--line)}
+.head{display:grid;gap:10px;margin-bottom:32px;max-width:60ch}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px 40px}
+.menu h3{grid-column:1/-1;font-family:var(--body);font-size:.8125rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-top:18px}
+.menu h3:first-child{margin-top:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);min-width:0}
+.row .t{min-width:0}
+.row .t b{display:block;font-weight:600}
+.row .t span{color:var(--mute);font-size:.9rem}
+.row .p{display:flex;align-items:center;gap:14px;flex:none}
+.price{font-weight:700;font-variant-numeric:tabular-nums}
+@media (max-width:760px){.menu{grid-template-columns:1fr}}
+
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.person{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.avatar{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font:700 1.1rem var(--display);background:var(--soft);color:var(--brand)}
+.person .role{color:var(--mute);font-size:.9rem}
+.person .bio{font-size:.95rem;flex:1}
+@media (max-width:960px){.team{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.team{grid-template-columns:1fr}}
+
+/* booking */
+#book{scroll-margin-top:8px}
+.steps{list-style:none;display:flex;gap:8px;padding:0;margin:0 0 20px;counter-reset:s}
+.steps li{flex:1;min-width:0;counter-increment:s;display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600;color:var(--mute);padding-bottom:10px;border-bottom:3px solid var(--line)}
+.steps li::before{content:counter(s);display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;background:var(--soft);font-size:.8rem}
+.steps li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.steps li.cur{color:var(--ink);border-color:var(--brand)}
+.steps li.cur::before{background:var(--brand);color:var(--brand-ink)}
+.steps li.done{color:var(--ink);border-color:var(--brand)}
+.steps li.done::before{content:"\2713";background:var(--ok);color:#fff}
+@media (max-width:560px){.steps li span{display:none}.steps li.cur span{display:inline}.steps li.cur{flex:2}}
+.bookgrid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px}
+.panel{padding:28px;min-width:0}
+.panel>h3{font-size:1.25rem;margin-bottom:6px;outline:none}
+.panel>p.sub{color:var(--mute);margin-bottom:20px}
+.summary{padding:24px;position:sticky;top:16px}
+.summary h3{font-family:var(--body);font-weight:700;font-size:1rem;letter-spacing:0;margin-bottom:12px}
+.summary dl{margin:0;display:grid;gap:12px}
+.summary dt{font-size:.8125rem;color:var(--mute)}
+.summary dd{margin:0;font-weight:600}
+.summary dd.none{color:var(--mute);font-weight:400}
+.summary .total{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.summary .total b{font-size:1.4rem;font-variant-numeric:tabular-nums}
+.summary small{display:block;margin-top:6px;color:var(--mute)}
+@media (max-width:900px){.bookgrid{grid-template-columns:1fr}.summary{position:static;order:-1;padding:16px 20px}.summary dl{grid-template-columns:1fr 1fr}.panel{padding:20px}}
+@media (max-width:480px){.summary dl{grid-template-columns:1fr}}
+
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-align:left;padding:14px 16px;min-height:64px;border-radius:14px;border:2px solid var(--line);background:var(--bg);cursor:pointer}
+.opt:hover{border-color:var(--brand)}
+.opt[aria-pressed="true"]{border-color:var(--brand);background:var(--soft)}
+.opt .t{min-width:0}
+.opt .t b{display:block;font-weight:600}
+.opt .t span{color:var(--mute);font-size:.9rem}
+.opt .p{font-weight:700;font-variant-numeric:tabular-nums;flex:none}
+.opt .avatar{width:44px;height:44px;font-size:.9rem;flex:none}
+.opt .l{display:flex;align-items:center;gap:14px;min-width:0}
+.group{font-size:.8125rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:18px 0 8px}
+.group:first-of-type{margin-top:0}
+
+.dates{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:68px;padding:6px 2px;border-radius:12px;border:2px solid var(--line);background:var(--bg);cursor:pointer;min-width:0}
+.day:hover:not([disabled]){border-color:var(--brand)}
+.day small{font-size:.75rem;color:var(--mute)}
+.day b{font-size:1.1rem;font-variant-numeric:tabular-nums}
+.day[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.day[aria-pressed="true"] small{color:var(--brand-ink)}
+.day[disabled]{opacity:.45;cursor:not-allowed;background:transparent}
+.pager{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px}
+.pager b{font-weight:600}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-bottom:6px}
+.slot{min-height:46px;border-radius:10px;border:2px solid var(--line);background:var(--bg);cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums}
+.slot:hover{border-color:var(--brand)}
+.slot[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.empty{padding:18px;border-radius:12px;background:var(--bg);border:1px dashed var(--line);color:var(--mute)}
+@media (max-width:480px){.dates{gap:5px}.day{min-height:62px}}
+
+.field{display:grid;gap:6px;margin-bottom:16px}
+.field label{font-weight:600;font-size:.95rem}
+.field input,.field textarea{width:100%;min-height:48px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.field textarea{min-height:96px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--brand)}
+.field [aria-invalid="true"]{border-color:var(--bad)}
+.err{color:var(--bad);font-size:.875rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+@media (max-width:900px){
+  .actions{position:sticky;bottom:0;margin:24px -20px -20px;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));background:var(--surface);border-radius:0 0 20px 20px}
+  .actions .btn{flex:1}
+}
+
+.done-box{text-align:left}
+.tick{width:56px;height:56px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:1.6rem;margin-bottom:16px}
+.ref{display:inline-block;margin:10px 0 18px;padding:8px 14px;border-radius:10px;background:var(--soft);font:700 1.1rem var(--display);letter-spacing:.04em}
+.recap{display:grid;gap:10px;margin:0 0 20px;padding:18px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.recap div{display:flex;justify-content:space-between;gap:16px}
+.recap dt{color:var(--mute)}
+.recap dd{margin:0;font-weight:600;text-align:right}
+.recap{grid-template-columns:1fr}
+
+#mine{margin-top:28px}
+#mine h3{margin-bottom:12px}
+.mine{display:grid;gap:10px}
+.booked{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;flex-wrap:wrap}
+.booked .t{min-width:0}
+.booked .t b{display:block}
+.booked .t span{color:var(--mute);font-size:.9rem}
+.btns{display:flex;gap:8px}
+.link{background:none;border:0;padding:8px 4px;color:var(--brand);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;min-height:40px}
+.link.bad{color:var(--bad)}
+
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.hours{display:grid;gap:0;margin:0}
+.hours div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.hours dt{font-weight:600}
+.hours dd{margin:0;color:var(--mute)}
+.hours .today dt,.hours .today dd{color:var(--brand);font-weight:700}
+@media (max-width:760px){.visit{grid-template-columns:1fr}}
+footer{padding-block:32px 40px;color:var(--mute);font-size:.9rem;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="demo"><div class="wrap"><a href="/" style="text-decoration:underline;text-underline-offset:3px;font-weight:600">&larr; Back to Apolonix Tech</a> &nbsp;Demo project. Halo &amp; Hue is a fictional salon, and the times shown are sample availability. Bookings stay in your browser.</div></div>
+
+<header><div class="wrap">
+  <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>Halo &amp; Hue</a>
+  <nav aria-label="Main">
+    <a href="#services">Services</a><a href="#team">Team</a><a href="#visit">Visit</a>
+    <a class="btn sm" href="#book">Book now</a>
+  </nav>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Colour, cuts and a chair that is ready when you are.</h1>
+    <p class="lead">Halo &amp; Hue is a hair studio for colour, cuts and styling. Choose a service, pick your stylist and book a time in under a minute.</p>
+    <div class="ctas"><a class="btn" href="#book">Book an appointment</a><a class="btn ghost" href="#services">See services and prices</a></div>
+  </div>
+  <aside class="open" aria-labelledby="openH">
+    <h2 id="openH">Next openings</h2>
+    <p class="muted" style="font-size:.9rem;margin-top:2px">For a 30-minute service</p>
+    <ul id="heroSlots"></ul>
+  </aside>
+</div></section>
+
+<section class="block" id="services"><div class="wrap">
+  <div class="head"><h2>Services and prices</h2><p class="muted">Prices are starting prices. Your stylist confirms the final cost at your appointment, and you pay at the salon.</p></div>
+  <div class="menu" id="menu"></div>
+</div></section>
+
+<section class="block alt" id="team"><div class="wrap">
+  <div class="head"><h2>Meet the team</h2><p class="muted">Pick a favourite stylist when you book, or choose any available stylist to get the earliest time.</p></div>
+  <div class="team" id="teamGrid"></div>
+</div></section>
+
+<section class="block" id="book"><div class="wrap">
+  <div class="head"><h2>Book an appointment</h2><p class="muted">Four short steps. You can change anything before you confirm.</p></div>
+  <ol class="steps" id="stepper" aria-label="Booking progress"></ol>
+  <div class="bookgrid">
+    <div class="card panel" id="panel" aria-live="polite"></div>
+    <aside class="card summary" id="summary" aria-label="Your booking summary"></aside>
+  </div>
+  <div id="mine"></div>
+</div></section>
+
+<section class="block alt" id="visit"><div class="wrap">
+  <div class="visit">
+    <div>
+      <div class="head" style="margin-bottom:20px"><h2>Visit the studio</h2></div>
+      <p>214 Linden Row, Suite 3</p>
+      <p class="muted" style="margin-top:8px">A fictional address for this demo. Street parking is free after 5 PM, and the studio is step-free from the entrance to the chairs.</p>
+    </div>
+    <dl class="hours" id="hours" aria-label="Opening hours"></dl>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>&copy; 2026 Halo &amp; Hue Salon (fictional)</span><span>Booking demo built by Apolonix Tech</span></div></footer>
+
+<script>
+(function(){
+  var SERVICES=[
+    {id:'cut-w',cat:'Cuts',name:"Women's cut and style",mins:60,price:75,desc:'Consultation, wash, cut and finish'},
+    {id:'cut-m',cat:'Cuts',name:"Men's cut",mins:30,price:40,desc:'Cut and neckline clean-up'},
+    {id:'cut-k',cat:'Cuts',name:"Kids' cut (under 12)",mins:30,price:30,desc:'Wash-free trim and style'},
+    {id:'color',cat:'Colour',name:'Full colour',mins:120,price:140,desc:'Single-process colour, root to tip'},
+    {id:'bal',cat:'Colour',name:'Balayage or highlights',mins:180,price:220,desc:'Hand-painted lightening with toner'},
+    {id:'gloss',cat:'Colour',name:'Gloss treatment',mins:45,price:65,desc:'Shine and tone refresh'},
+    {id:'blow',cat:'Styling',name:'Blow-dry and style',mins:45,price:50,desc:'Wash, blow-dry and finish'},
+    {id:'updo',cat:'Styling',name:'Event updo',mins:75,price:110,desc:'Includes a quick trial of the look'},
+    {id:'care',cat:'Care',name:'Deep conditioning treatment',mins:30,price:35,desc:'Repair mask with scalp massage'}
+  ];
+  var STYLISTS=[
+    {id:'maya',name:'Maya Okafor',init:'MO',role:'Colour specialist',bio:'Soft blondes, rich browns and gloss work that grows out well.',does:['cut-w','color','bal','gloss','blow','care'],off:[3]},
+    {id:'jordan',name:'Jordan Reyes',init:'JR',role:'Cuts and barbering',bio:'Precise short cuts, fades and low-fuss shapes for every hair type.',does:['cut-w','cut-m','cut-k','blow'],off:[5]},
+    {id:'priya',name:'Priya Nair',init:'PN',role:'Balayage and updos',bio:'Hand-painted colour and event styling, from weddings to graduations.',does:['cut-w','color','bal','gloss','blow','updo'],off:[2]},
+    {id:'sam',name:'Sam Whitfield',init:'SW',role:'Family stylist',bio:'Relaxed appointments for kids, teens and anyone nervous about a big change.',does:['cut-w','cut-m','cut-k','blow','care'],off:[4]}
+  ];
+  var HOURS={2:[9,18],3:[9,18],4:[10,20],5:[9,18],6:[9,16]};
+  var DAYN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var STEPS=['Service','Stylist','Time','Details'];
+
+  var pad=function(n){return String(n).padStart(2,'0')};
+  var key=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var fromKey=function(k){var p=k.split('-').map(Number);return new Date(p[0],p[1]-1,p[2])};
+  var fmtT=function(m){var h=Math.floor(m/60),mm=m%60;return ((h+11)%12+1)+':'+pad(mm)+' '+(h>=12?'PM':'AM')};
+  var fmtD=function(k,long){return fromKey(k).toLocaleDateString('en-CA',{weekday:long?'long':'short',month:'short',day:'numeric'})};
+  var money=function(n){return '$'+n};
+  var dur=function(m){var h=Math.floor(m/60),r=m%60;return (h?h+' hr':'')+(h&&r?' ':'')+(r?r+' min':'')};
+  var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var svcById=function(id){return SERVICES.find(function(s){return s.id===id})};
+  var styById=function(id){return STYLISTS.find(function(s){return s.id===id})};
+  var hash=function(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
+  var $=function(id){return document.getElementById(id)};
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* bookings live in this browser only */
+  var mem=[];
+  function loadB(){try{var v=JSON.parse(localStorage.getItem('halo-hue-bookings')||'[]');return Array.isArray(v)?v:[]}catch(e){return mem}}
+  function saveB(a){mem=a;try{localStorage.setItem('halo-hue-bookings',JSON.stringify(a))}catch(e){}}
+  var bookings=loadB();
+
+  /* availability (sample data, deterministic per stylist and day) */
+  function cellBusy(sid,dk,cell){
+    if(hash(sid+dk+cell)%100<30)return true;
+    return bookings.some(function(b){return b.stylistId===sid&&b.date===dk&&cell>=Math.floor(b.start/30)&&cell<Math.ceil((b.start+b.mins)/30)});
+  }
+  function openStarts(dk,svc,sid){
+    var d=fromKey(dk),h=HOURS[d.getDay()];if(!h||!svc)return [];
+    var cands=(sid==='any'?STYLISTS:[styById(sid)]).filter(function(s){return s&&s.does.indexOf(svc.id)>-1&&s.off.indexOf(d.getDay())<0});
+    var now=new Date(),minStart=dk===key(now)?now.getHours()*60+now.getMinutes()+60:0,out=[];
+    for(var t=h[0]*60;t+svc.mins<=h[1]*60;t+=30){
+      if(t<minStart)continue;
+      var free=cands.filter(function(s){for(var c=t/30;c<Math.ceil((t+svc.mins)/30);c++){if(cellBusy(s.id,dk,c))return false}return true});
+      if(free.length)out.push({t:t,ids:free.map(function(s){return s.id})});
+    }
+    return out;
+  }
+
+  var S={step:0,service:null,stylist:'any',pref:null,date:null,time:null,page:0,form:{name:'',email:'',phone:'',notes:''},errors:{},done:null,cancel:null};
+  var focusPanel=false;
+
+  function fixSelection(){
+    var svc=svcById(S.service);
+    if(!svc){S.stylist='any';S.date=null;S.time=null;return}
+    if(S.stylist!=='any'&&styById(S.stylist).does.indexOf(svc.id)<0)S.stylist='any';
+    if(S.date){
+      var st=openStarts(S.date,svc,S.stylist);
+      if(!st.some(function(x){return x.t===S.time}))S.time=null;
+      if(!st.length)S.date=null;
+    }
+  }
+
+  /* ---------- static sections ---------- */
+  function renderMenu(){
+    var cats=[],html='';
+    SERVICES.forEach(function(s){if(cats.indexOf(s.cat)<0)cats.push(s.cat)});
+    cats.forEach(function(c){
+      html+='<h3>'+c+'</h3>';
+      SERVICES.filter(function(s){return s.cat===c}).forEach(function(s){
+        html+='<div class="row"><div class="t"><b>'+esc(s.name)+'</b><span>'+esc(s.desc)+' &middot; '+dur(s.mins)+'</span></div>'+
+          '<div class="p"><span class="price">'+money(s.price)+'</span><button class="btn sm ghost" data-a="book-service" data-id="'+s.id+'" aria-label="Book '+esc(s.name)+'">Book</button></div></div>';
+      });
+    });
+    $('menu').innerHTML=html;
+  }
+  function renderTeam(){
+    $('teamGrid').innerHTML=STYLISTS.map(function(s){
+      return '<article class="person"><div class="avatar" aria-hidden="true">'+s.init+'</div><div><h3>'+esc(s.name)+'</h3><div class="role">'+esc(s.role)+'</div></div><p class="bio">'+esc(s.bio)+'</p><button class="btn sm ghost" data-a="book-with" data-id="'+s.id+'">Book with '+esc(s.name.split(' ')[0])+'</button></article>';
+    }).join('');
+  }
+  function renderHours(){
+    var today=new Date().getDay();
+    var order=[2,3,4,5,6,0,1];
+    $('hours').innerHTML=order.map(function(d){
+      var h=HOURS[d];
+      return '<div'+(d===today?' class="today"':'')+'><dt>'+DAYN[d]+'</dt><dd>'+(h?fmtT(h[0]*60)+' to '+fmtT(h[1]*60):'Closed')+'</dd></div>';
+    }).join('');
+  }
+  function renderHero(){
+    var svc=svcById('cut-k'),out=[],base=new Date();
+    for(var i=0;i<21&&out.length<3;i++){
+      var d=new Date(base.getFullYear(),base.getMonth(),base.getDate()+i),dk=key(d),st=openStarts(dk,svc,'any');
+      if(st.length){out.push({dk:dk,t:st[0].t,who:styById(st[0].ids[0]).name.split(' ')[0]})}
+    }
+    $('heroSlots').innerHTML=out.map(function(o){
+      return '<li><a href="#book"><span class="when">'+fmtD(o.dk)+' at '+fmtT(o.t)+'</span><span class="who">with '+esc(o.who)+'</span></a></li>';
+    }).join('')||'<li class="muted">No openings in the next three weeks.</li>';
+  }
+
+  /* ---------- booking ui ---------- */
+  function renderStepper(){
+    var cur=S.done?4:S.step;
+    $('stepper').innerHTML=STEPS.map(function(n,i){
+      var c=i<cur?'done':(i===cur?'cur':'');
+      return '<li class="'+c+'"'+(i===cur?' aria-current="step"':'')+'><span>'+n+'</span></li>';
+    }).join('');
+  }
+  function renderSummary(){
+    var el=$('summary');
+    if(S.done){el.hidden=true;return}
+    el.hidden=false;
+    var svc=svcById(S.service),sty=S.stylist==='any'?null:styById(S.stylist);
+    var row=function(label,val){return '<div><dt>'+label+'</dt><dd'+(val?'':' class="none"')+'>'+(val||'Not chosen yet')+'</dd></div>'};
+    el.innerHTML='<h3>Your booking</h3><dl>'+
+      row('Service',svc?esc(svc.name)+' ('+dur(svc.mins)+')':'')+
+      row('Stylist',svc?(sty?esc(sty.name):'Any available stylist'):'')+
+      row('Date and time',S.date&&S.time!==null?fmtD(S.date,true)+' at '+fmtT(S.time):'')+
+    '</dl><div class="total"><span>Estimated total</span><b>'+(svc?money(svc.price):'$0')+'</b></div><small>Pay at the salon. Free to change or cancel.</small>';
+  }
+  function actions(canNext,nextLabel,showBack){
+    return '<div class="actions">'+(showBack?'<button class="btn ghost" data-a="back">Back</button>':'<span></span>')+
+      '<button class="btn" data-a="'+(nextLabel==='Confirm booking'?'confirm':'next')+'"'+(canNext?'':' disabled')+'>'+nextLabel+'</button></div>';
+  }
+  function stepService(){
+    var cats=[],html='<h3 tabindex="-1" id="stepHead">Choose a service</h3><p class="sub">Prices are starting prices.</p>';
+    SERVICES.forEach(function(s){if(cats.indexOf(s.cat)<0)cats.push(s.cat)});
+    cats.forEach(function(c){
+      html+='<div class="group">'+c+'</div><div class="opts">';
+      SERVICES.filter(function(s){return s.cat===c}).forEach(function(s){
+        html+='<button class="opt" data-a="pick-service" data-id="'+s.id+'" aria-pressed="'+(S.service===s.id)+'"><span class="t"><b>'+esc(s.name)+'</b><span>'+dur(s.mins)+' &middot; '+esc(s.desc)+'</span></span><span class="p">'+money(s.price)+'</span></button>';
+      });
+      html+='</div>';
+    });
+    return html+actions(!!S.service,'Continue',false);
+  }
+  function stepStylist(){
+    var svc=svcById(S.service);
+    var html='<h3 tabindex="-1" id="stepHead">Choose a stylist</h3><p class="sub">These stylists offer '+esc(svc.name.toLowerCase())+'.</p><div class="opts">';
+    html+='<button class="opt" data-a="pick-stylist" data-id="any" aria-pressed="'+(S.stylist==='any')+'"><span class="l"><span class="avatar" aria-hidden="true">&#9733;</span><span class="t"><b>Any available stylist</b><span>Shows the most open times</span></span></span></button>';
+    STYLISTS.filter(function(s){return s.does.indexOf(svc.id)>-1}).forEach(function(s){
+      html+='<button class="opt" data-a="pick-stylist" data-id="'+s.id+'" aria-pressed="'+(S.stylist===s.id)+'"><span class="l"><span class="avatar" aria-hidden="true">'+s.init+'</span><span class="t"><b>'+esc(s.name)+'</b><span>'+esc(s.role)+'</span></span></span></button>';
+    });
+    return html+'</div>'+actions(true,'Continue',true);
+  }
+  function stepTime(){
+    var svc=svcById(S.service),base=new Date(),start=new Date(base.getFullYear(),base.getMonth(),base.getDate()+S.page*14);
+    var html='<h3 tabindex="-1" id="stepHead">Pick a date and time</h3><p class="sub">Open days are Tuesday to Saturday.</p>';
+    html+='<div class="pager"><button class="btn sm ghost" data-a="page" data-dir="-1"'+(S.page===0?' disabled':'')+'>Earlier</button><b>'+start.toLocaleDateString('en-CA',{month:'long',year:'numeric'})+'</b><button class="btn sm ghost" data-a="page" data-dir="1"'+(S.page>=2?' disabled':'')+'>Later</button></div>';
+    html+='<div class="dates" role="group" aria-label="Dates">';
+    for(var i=0;i<14;i++){
+      var d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),dk=key(d),n=openStarts(dk,svc,S.stylist).length,closed=!HOURS[d.getDay()];
+      html+='<button class="day" data-a="pick-date" data-d="'+dk+'" aria-pressed="'+(S.date===dk)+'"'+(n?'':' disabled')+' aria-label="'+fmtD(dk,true)+(n?'':closed?', closed':', fully booked')+'"><small>'+d.toLocaleDateString('en-CA',{weekday:'short'})+'</small><b>'+d.getDate()+'</b><small>'+(n?'':closed?'Closed':'Full')+'</small></button>';
+    }
+    html+='</div><div style="margin-top:22px">';
+    if(!S.date){html+='<div class="empty">Choose a date to see open times.</div>'}
+    else{
+      var st=openStarts(S.date,svc,S.stylist),groups=[['Morning',0,720],['Afternoon',720,1020],['Evening',1020,1440]];
+      html+='<p style="font-weight:600;margin-bottom:10px">'+fmtD(S.date,true)+'</p>';
+      groups.forEach(function(g){
+        var list=st.filter(function(x){return x.t>=g[1]&&x.t<g[2]});
+        if(!list.length)return;
+        html+='<div class="group">'+g[0]+'</div><div class="slots">'+list.map(function(x){return '<button class="slot" data-a="pick-time" data-t="'+x.t+'" aria-pressed="'+(S.time===x.t)+'">'+fmtT(x.t)+'</button>'}).join('')+'</div>';
+      });
+    }
+    html+='</div>';
+    return html+actions(S.date!==null&&S.time!==null,'Continue',true);
+  }
+  function field(id,label,type,opt,extra){
+    var e=S.errors[id],v=S.form[id]||'';
+    var ctl=type==='textarea'?'<textarea id="f-'+id+'" rows="3"'+(e?' aria-invalid="true" aria-describedby="e-'+id+'"':'')+'>'+esc(v)+'</textarea>'
+      :'<input id="f-'+id+'" type="'+type+'" value="'+esc(v)+'"'+(extra||'')+(e?' aria-invalid="true" aria-describedby="e-'+id+'"':'')+'>';
+    return '<div class="field"><label for="f-'+id+'">'+label+(opt?' <span class="muted" style="font-weight:400">(optional)</span>':'')+'</label>'+ctl+(e?'<span class="err" id="e-'+id+'">'+e+'</span>':'')+'</div>';
+  }
+  function stepDetails(){
+    return '<h3 tabindex="-1" id="stepHead">Your details</h3><p class="sub">We use these only to hold your appointment.</p>'+
+      '<div class="two">'+field('name','Full name','text',false,' autocomplete="name"')+field('email','Email','email',false,' autocomplete="email" inputmode="email"')+'</div>'+
+      field('phone','Phone','tel',true,' autocomplete="tel" inputmode="tel"')+
+      field('notes','Anything we should know?','textarea',true)+
+      actions(true,'Confirm booking',true);
+  }
+  function stepDone(){
+    var b=S.done,svc=svcById(b.serviceId),sty=styById(b.stylistId);
+    return '<div class="done-box"><div class="tick" aria-hidden="true">&#10003;</div><h3 tabindex="-1" id="stepHead">You are booked, '+esc(b.name.split(' ')[0])+'</h3>'+
+      '<p class="muted" style="margin-top:6px">Your reference is</p><div class="ref">'+b.ref+'</div>'+
+      '<dl class="recap"><div><dt>Service</dt><dd>'+esc(svc.name)+'</dd></div><div><dt>Stylist</dt><dd>'+esc(sty.name)+'</dd></div><div><dt>When</dt><dd>'+fmtD(b.date,true)+' at '+fmtT(b.start)+'</dd></div><div><dt>Length</dt><dd>'+dur(b.mins)+'</dd></div><div><dt>Estimated total</dt><dd>'+money(svc.price)+'</dd></div></dl>'+
+      '<p class="muted" style="margin-bottom:20px">This is a demo, so no email or text is sent. Your booking is saved in this browser and listed below.</p>'+
+      '<div class="ctas"><button class="btn" data-a="again">Book another appointment</button><button class="btn ghost" data-a="copy" id="copyBtn">Copy details</button></div></div>';
+  }
+  function renderPanel(){
+    var html=S.done?stepDone():[stepService,stepStylist,stepTime,stepDetails][S.step]();
+    $('panel').innerHTML=html;
+    if(focusPanel){focusPanel=false;var h=$('stepHead');if(h)h.focus({preventScroll:true})}
+  }
+  function renderMine(){
+    var today=key(new Date()),list=bookings.filter(function(b){return b.date>=today}).sort(function(a,b){return a.date===b.date?a.start-b.start:(a.date<b.date?-1:1)});
+    if(!list.length){$('mine').innerHTML='';return}
+    $('mine').innerHTML='<h3>Your upcoming bookings</h3><div class="mine">'+list.map(function(b){
+      var svc=svcById(b.serviceId),sty=styById(b.stylistId),asking=S.cancel===b.ref;
+      return '<div class="card booked"><div class="t"><b>'+esc(svc.name)+' with '+esc(sty.name.split(' ')[0])+'</b><span>'+fmtD(b.date,true)+' at '+fmtT(b.start)+' &middot; '+b.ref+'</span></div><div class="btns">'+
+        (asking?'<button class="link bad" data-a="do-cancel" data-ref="'+b.ref+'">Yes, cancel it</button><button class="link" data-a="keep">Keep it</button>':'<button class="link bad" data-a="ask-cancel" data-ref="'+b.ref+'">Cancel</button>')+'</div></div>';
+    }).join('')+'</div>';
+  }
+  function render(){fixSelection();renderStepper();renderSummary();renderPanel();renderMine()}
+  function applyPref(){
+    var svc=svcById(S.service);
+    if(S.pref&&svc&&styById(S.pref).does.indexOf(svc.id)>-1)S.stylist=S.pref;
+    S.pref=null;
+  }
+  function go(step,scroll){S.step=step;focusPanel=true;render();if(scroll)scrollToBook()}
+  function scrollToBook(){var el=$('book');el.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'})}
+
+  function validate(){
+    var f=S.form,e={};
+    if(!f.name.trim())e.name='Enter your name so we know who to expect.';
+    if(!f.email.trim())e.email='Enter your email address.';
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim()))e.email='Enter an email like name@example.com.';
+    S.errors=e;return !Object.keys(e).length;
+  }
+  function makeRef(){var a='ABCDEFGHJKMNPQRSTUVWXYZ23456789',r='';for(var i=0;i<5;i++)r+=a[Math.floor(Math.random()*a.length)];return 'HH-'+r}
+  function confirmBooking(){
+    if(!validate()){render();var first=Object.keys(S.errors)[0],el=$('f-'+first);if(el)el.focus();return}
+    var svc=svcById(S.service),slot=openStarts(S.date,svc,S.stylist).find(function(x){return x.t===S.time});
+    if(!slot){S.time=null;S.step=2;focusPanel=true;render();return}
+    var sid=S.stylist==='any'?slot.ids[0]:S.stylist;
+    var b={ref:makeRef(),serviceId:svc.id,stylistId:sid,date:S.date,start:S.time,mins:svc.mins,name:S.form.name.trim(),email:S.form.email.trim(),phone:S.form.phone.trim(),notes:S.form.notes.trim()};
+    bookings=bookings.concat([b]);saveB(bookings);S.done=b;focusPanel=true;render();renderHero();scrollToBook();
+  }
+  function resetFlow(){
+    S.step=0;S.service=null;S.stylist='any';S.pref=null;S.date=null;S.time=null;S.page=0;S.done=null;S.errors={};
+    S.form={name:S.form.name,email:S.form.email,phone:S.form.phone,notes:''};
+    focusPanel=true;render();
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-a]');if(!t||t.disabled)return;
+    var a=t.dataset.a;
+    if(a==='pick-service'){S.service=t.dataset.id;S.time=null;applyPref();render()}
+    else if(a==='pick-stylist'){S.stylist=t.dataset.id;S.time=null;render()}
+    else if(a==='pick-date'){S.date=t.dataset.d;S.time=null;render()}
+    else if(a==='pick-time'){S.time=Number(t.dataset.t);render()}
+    else if(a==='page'){S.page=Math.max(0,Math.min(2,S.page+Number(t.dataset.dir)));render()}
+    else if(a==='next'){go(S.step+1,false)}
+    else if(a==='back'){go(S.step-1,false)}
+    else if(a==='confirm'){confirmBooking()}
+    else if(a==='again'){resetFlow();scrollToBook()}
+    else if(a==='book-service'){S.done=null;S.service=t.dataset.id;S.time=null;S.date=null;S.stylist='any';applyPref();S.step=1;focusPanel=true;render();scrollToBook()}
+    else if(a==='book-with'){S.done=null;S.pref=t.dataset.id;S.stylist='any';S.step=0;focusPanel=true;render();scrollToBook()}
+    else if(a==='ask-cancel'){S.cancel=t.dataset.ref;renderMine()}
+    else if(a==='keep'){S.cancel=null;renderMine()}
+    else if(a==='do-cancel'){bookings=bookings.filter(function(b){return b.ref!==t.dataset.ref});saveB(bookings);S.cancel=null;renderMine();renderHero();if(S.date)renderPanel()}
+    else if(a==='copy'){
+      var b=S.done,svc=svcById(b.serviceId),sty=styById(b.stylistId);
+      var txt='Halo & Hue booking '+b.ref+'\n'+svc.name+' with '+sty.name+'\n'+fmtD(b.date,true)+' at '+fmtT(b.start);
+      var done=function(ok){t.textContent=ok?'Copied':'Select and copy from the summary';setTimeout(function(){t.textContent='Copy details'},2000)};
+      try{navigator.clipboard.writeText(txt).then(function(){done(true)},function(){done(false)})}catch(err){done(false)}
+    }
+  });
+  document.addEventListener('input',function(e){
+    var id=e.target.id;if(id&&id.indexOf('f-')===0){S.form[id.slice(2)]=e.target.value}
+  });
+
+  renderMenu();renderTeam();renderHours();renderHero();render();
+})();
+</script>
+
+</body>
+</html>
