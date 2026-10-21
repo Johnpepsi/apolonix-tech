@@ -46,9 +46,17 @@ export default function Work() {
                 {project.url && (
                   <a
                     href={project.url}
+<<<<<<< HEAD
                     className="mt-5 inline-block text-sm font-semibold text-cobalt underline decoration-cobalt/30 underline-offset-4 hover:decoration-cobalt"
                   >
                     {project.linkLabel ?? "Visit site"} →
+=======
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-block text-sm font-semibold text-cobalt underline decoration-cobalt/30 underline-offset-4 hover:decoration-cobalt"
+                  >
+                    Visit site ↗
+>>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
                   </a>
                 )}
               </div>

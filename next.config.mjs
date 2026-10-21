@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+<<<<<<< HEAD
   async rewrites() {
     return [
       // Clean URLs for the standalone demo sites in /public/demos
@@ -10,6 +11,8 @@ const nextConfig = {
       { source: "/demos/northlight-photography", destination: "/demos/northlight-photography.html" },
     ];
   },
+=======
+>>>>>>> 609baaf81ce1c04802d56866bdd76bb2ddd37482
 };
 
 export default nextConfig;
