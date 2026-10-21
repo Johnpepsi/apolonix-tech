@@ -18,7 +18,7 @@ export const plans: Plan[] = [
     id: "basic",
     tag: "BASIC",
     name: "Basic Business Website",
-    price: "$400",
+    price: "$500",
     unit: "starting price",
     turnaround: "2–4 weeks",
     features: [
@@ -35,7 +35,7 @@ export const plans: Plan[] = [
     name: "WordPress Website",
     price: "$700",
     unit: "starting price",
-    turnaround: "1–2 weeks",
+    turnaround: "2–3 weeks",
     features: [
       "Up to 5 pages",
       "Editable page builder",
