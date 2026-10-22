@@ -1,11 +1,8 @@
 const facts = [
   { label: "Location", value: "Regina, Saskatchewan, Canada" },
   { label: "Focus", value: "Full-stack development" },
-<<<<<<< HEAD
   { label: "Building since", value: "2021" },
-=======
   { label: "Building since", value: "2019" },
->>>>>>> bec892d3e523106976827aeea77b358d2db0fbc7
 ];
 
 const skills = [
