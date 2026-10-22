@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Ironwood Plumbing &amp; Heating</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: trade-signage feel. A cold-to-hot stripe runs the top; water work is cold blue, heating work is hot red. Hero leads with an emergency guide, then services, area check, plans and a quote form. */
+:root{
+  --bg:#F3F6FA; --surface:#FFFFFF; --ink:#0B1F33; --mute:#4A5F73; --line:#D4DEE8;
+  --cold:#0B6BCB; --cold-ink:#FFFFFF; --cold-soft:#E2EEFA;
+  --hot:#C9372C; --hot-ink:#FFFFFF; --hot-soft:#FBE6E3; --ok:#1F7A4D;
+  --display:'Barlow Condensed','Arial Narrow',system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1623; --surface:#122234; --ink:#E9F0F7; --mute:#9FB3C6; --line:#26394D;
+    --cold:#5AAEFF; --cold-ink:#0B1623; --cold-soft:#15304B;
+    --hot:#FF7A6B; --hot-ink:#0B1623; --hot-soft:#3A1E1F; --ok:#5FD3A0;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1623; --surface:#122234; --ink:#E9F0F7; --mute:#9FB3C6; --line:#26394D;
+  --cold:#5AAEFF; --cold-ink:#0B1623; --cold-soft:#15304B;
+  --hot:#FF7A6B; --hot-ink:#0B1623; --hot-soft:#3A1E1F; --ok:#5FD3A0;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 var(--body);-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.02;text-wrap:balance;letter-spacing:-.005em}
+h1{font-size:clamp(2.6rem,7vw,4.8rem);font-weight:700}
+h2{font-size:clamp(2rem,4.2vw,2.9rem);font-weight:700}
+h3{font-size:1.45rem;font-weight:700}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.muted{color:var(--mute)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;z-index:50}
+.skip:focus{left:12px}
+.demo{background:var(--ink);color:var(--bg);font-size:.875rem}
+.demo .wrap{padding-block:9px}
+.demo a{text-decoration:underline;text-underline-offset:3px;font-weight:600}
+.stripe{height:6px;background:linear-gradient(90deg,var(--cold),var(--cold) 38%,var(--hot) 62%,var(--hot))}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 1.55rem/1 var(--display)}
+.brand small{display:block;font:500 .78rem var(--body);color:var(--mute);margin-top:3px;letter-spacing:.02em}
+.logo{width:34px;height:34px;flex:none}
+nav{display:flex;align-items:center;gap:22px}
+nav a.l{text-decoration:none;font-weight:600;color:var(--mute)}
+nav a.l:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 24px;border-radius:10px;border:2px solid var(--cold);background:var(--cold);color:var(--cold-ink);font-weight:700;font-size:1.05rem;text-decoration:none;cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.hot{background:var(--hot);border-color:var(--hot);color:var(--hot-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--cold)}
+.btn.sm{min-height:44px;padding:0 18px;font-size:.98rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+@media (max-width:800px){nav a.l{display:none}}
+@media (max-width:420px){.brand small{display:none}}
+
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start;padding-block:44px 64px}
+.hero p.lead{font-size:1.2rem;color:var(--mute);margin:18px 0 26px;max-width:42ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.facts{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:8px;color:var(--mute)}
+.facts li{display:flex;gap:10px;align-items:center}
+.facts li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--cold);flex:none}
+.triage{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:24px;min-width:0}
+.triage h2{font-size:1.8rem}
+.triage .opts{display:grid;gap:8px;margin-top:16px}
+.tbtn{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:10px 16px;border-radius:12px;border:2px solid var(--line);background:var(--bg);text-align:left;font-weight:600;cursor:pointer}
+.tbtn:hover{border-color:var(--cold)}
+.tbtn[aria-pressed="true"]{border-color:var(--cold);background:var(--cold-soft)}
+.tbtn.gas[aria-pressed="true"]{border-color:var(--hot);background:var(--hot-soft)}
+.tbtn::after{content:"\203A";font-size:1.4rem;color:var(--mute)}
+.advice{margin-top:16px;border-radius:14px;padding:18px;background:var(--cold-soft);border:2px solid var(--cold)}
+.advice.crit{background:var(--hot-soft);border-color:var(--hot)}
+.advice h3{font-size:1.4rem;margin-bottom:8px}
+.advice ol{margin:0 0 14px;padding-left:22px;display:grid;gap:6px}
+.advice .row{display:flex;flex-wrap:wrap;gap:10px}
+.tag{display:inline-block;font-weight:700;font-size:.85rem;padding:3px 10px;border-radius:999px;background:var(--cold);color:var(--cold-ink);margin-bottom:10px}
+.crit .tag{background:var(--hot);color:var(--hot-ink)}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:30px;padding-block:30px 44px}}
+
+section.block{padding-block:64px}
+section.alt{background:var(--surface);border-block:1px solid var(--line)}
+.head{max-width:62ch;margin-bottom:28px;display:grid;gap:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.col{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:24px;min-width:0}
+.col.water{border-top:8px solid var(--cold)}
+.col.heat{border-top:8px solid var(--hot)}
+.col h3{font-size:1.9rem;margin-bottom:4px}
+.col.water h3{color:var(--cold)}
+.col.heat h3{color:var(--hot)}
+.svc{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.svc:last-child{border-bottom:0}
+.svc .t{min-width:0}
+.svc b{display:block;font-weight:600}
+.svc span.d{color:var(--mute);font-size:.95rem}
+.svc .p{flex:none;text-align:right}
+.svc .p b{font-variant-numeric:tabular-nums}
+.link{background:none;border:0;padding:6px 0;color:var(--cold);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;min-height:36px}
+.heat .link{color:var(--hot)}
+.note{margin-top:18px;padding:14px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--mute)}
+@media (max-width:800px){.two{grid-template-columns:1fr}}
+
+.area{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.check{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.check input{flex:1;min-width:150px;min-height:50px;padding:0 16px;border-radius:10px;border:2px solid var(--line);background:var(--bg);text-transform:uppercase;letter-spacing:.06em}
+.check input:focus{outline:none;border-color:var(--cold)}
+.result{margin-top:14px;padding:14px 16px;border-radius:12px;border:2px solid var(--line);min-height:56px}
+.result.ok{border-color:var(--ok)}
+.result.warn{border-color:var(--hot)}
+.hours{margin:0;display:grid}
+.hours div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.hours dt{font-weight:600}
+.hours dd{margin:0;color:var(--mute);text-align:right}
+@media (max-width:800px){.area{grid-template-columns:1fr}}
+
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:860px}
+.plan{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.plan.best{border-color:var(--cold)}
+.plan .price{font:700 2.8rem/1 var(--display)}
+.plan .price small{font:500 1rem var(--body);color:var(--mute)}
+.plan ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;flex:1}
+.plan li{display:flex;gap:10px}
+.plan li::before{content:"\2713";color:var(--ok);font-weight:700}
+@media (max-width:700px){.plans{grid-template-columns:1fr}}
+
+.quote{display:grid;grid-template-columns:.8fr 1.2fr;gap:36px;align-items:start}
+.form{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:26px;min-width:0}
+.field{display:grid;gap:6px;margin-bottom:16px}
+.field label,.field legend{font-weight:600;padding:0}
+.field input,.field select,.field textarea{width:100%;min-height:50px;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:var(--bg)}
+.field textarea{min-height:100px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--cold)}
+.field [aria-invalid="true"]{border-color:var(--hot)}
+.err{color:var(--hot);font-size:.9rem;font-weight:600}
+fieldset.field{border:0;margin:0 0 16px;padding:0}
+.when{display:grid;gap:8px}
+.when label{display:flex;gap:12px;align-items:center;min-height:52px;padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer;font-weight:500}
+.when label:has(input:checked){border-color:var(--cold);background:var(--cold-soft)}
+.when label:has(input:focus-visible){outline:3px solid var(--cold);outline-offset:2px}
+.when input{accent-color:var(--cold);width:18px;height:18px;margin:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.sent{padding:6px 0}
+.tick{width:56px;height:56px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:1.6rem;margin-bottom:14px}
+.tkt{display:inline-block;margin:8px 0 16px;padding:6px 14px;border-radius:10px;background:var(--cold-soft);font:700 1.6rem var(--display);letter-spacing:.04em}
+.recap{margin:16px 0;padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:grid;gap:8px}
+.recap div{display:flex;justify-content:space-between;gap:16px}
+.recap dt{color:var(--mute)}
+.recap dd{margin:0;font-weight:600;text-align:right}
+@media (max-width:860px){.quote{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.form{padding:20px}}
+
+footer{padding-block:28px 110px;color:var(--mute);font-size:.95rem;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;gap:10px;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--surface);border-top:2px solid var(--line)}
+.mbar .btn{flex:1}
+@media (min-width:900px){.mbar{display:none}footer{padding-bottom:36px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#quote">Skip to the quote form</a>
+<div class="demo"><div class="wrap"><a href="/">&larr; Back to Apolonix Tech</a> &nbsp;Demo project. Ironwood Plumbing &amp; Heating is a fictional company, and the phone number is not real. Nothing you submit is sent.</div></div>
+<div class="stripe" aria-hidden="true"></div>
+
+<header><div class="wrap">
+  <a class="brand" href="#top">
+    <svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3C12 10 7 14.5 7 21a10 10 0 0 0 10 10z" fill="var(--cold)"/><path d="M17 3c5 7 10 11.5 10 18a10 10 0 0 1-10 10z" fill="var(--hot)"/></svg>
+    <span>Ironwood<small>Plumbing &amp; Heating</small></span>
+  </a>
+  <nav aria-label="Main">
+    <a class="l" href="#services">Services</a><a class="l" href="#area">Service area</a><a class="l" href="#plans">Care plans</a>
+    <a class="btn sm hot" href="tel:+13065550147">Call (306) 555-0147</a>
+  </nav>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Heat and water, fixed right the first time.</h1>
+    <p class="lead">Licensed plumbers and heating technicians for homes and small businesses. Upfront pricing, clean work and a real person on the phone around the clock.</p>
+    <div class="ctas"><a class="btn" href="#quote">Request service</a><a class="btn ghost" href="#services">Services and prices</a></div>
+    <ul class="facts">
+      <li>Emergency calls answered 24 hours a day</li>
+      <li>$89 diagnostic fee, credited toward any repair we complete</li>
+      <li>Written price before work starts</li>
+    </ul>
+  </div>
+  <aside class="triage" aria-labelledby="tri">
+    <h2 id="tri">What is going on?</h2>
+    <p class="muted" style="margin-top:6px">Pick the closest match for steps you can take right now.</p>
+    <div class="opts" id="tOpts" role="group" aria-label="Problem type"></div>
+    <div id="advice" aria-live="polite"></div>
+  </aside>
+</div></section>
+
+<section class="block alt" id="services"><div class="wrap">
+  <div class="head"><h2>Services and starting prices</h2><p class="muted">Starting prices cover typical jobs. You get a written quote on site before we begin, so there are no surprises.</p></div>
+  <div class="two">
+    <div class="col water"><h3>Plumbing</h3><p class="muted">Leaks, drains and hot water.</p><div id="svcWater"></div></div>
+    <div class="col heat"><h3>Heating</h3><p class="muted">Furnaces and boilers, from tune-up to install.</p><div id="svcHeat"></div></div>
+  </div>
+  <p class="note">The $89 diagnostic fee covers the visit and finding the cause. It is credited to the repair if you go ahead with us. After-hours emergency visits add a $120 call-out fee.</p>
+</div></section>
+
+<section class="block" id="area"><div class="wrap area">
+  <div>
+    <div class="head" style="margin-bottom:0"><h2>Do we come to you?</h2><p class="muted">Enter the first three characters of your postal code.</p></div>
+    <form class="check" id="areaForm" novalidate>
+      <label for="fsa" style="position:absolute;left:-999px">Postal code, first three characters</label>
+      <input id="fsa" inputmode="text" maxlength="7" autocomplete="postal-code" placeholder="S4P" aria-describedby="areaRes">
+      <button class="btn" type="submit">Check my area</button>
+    </form>
+    <div class="result" id="areaRes" role="status">Results appear here.</div>
+  </div>
+  <div>
+    <div class="head" style="margin-bottom:12px"><h2>Hours</h2></div>
+    <dl class="hours">
+      <div><dt>Emergency line</dt><dd>24 hours, every day</dd></div>
+      <div><dt>Office and booking</dt><dd>Mon to Fri, 8:00 AM to 5:00 PM</dd></div>
+      <div><dt>Scheduled visits</dt><dd>Mon to Sat, 8:00 AM to 6:00 PM</dd></div>
+    </dl>
+  </div>
+</div></section>
+
+<section class="block alt" id="plans"><div class="wrap">
+  <div class="head"><h2>Care plans</h2><p class="muted">A yearly check keeps a furnace running through the coldest weeks and catches small leaks early. Cancel any time.</p></div>
+  <div class="plans">
+    <div class="plan"><h3>Furnace Care</h3><div class="price">$12<small> / month</small></div>
+      <ul><li>Annual furnace tune-up</li><li>Filter reminders</li><li>10% off repairs</li></ul>
+      <button class="btn ghost" data-a="request" data-svc="Care plan">Ask about this plan</button></div>
+    <div class="plan best"><h3>Whole Home Care</h3><div class="price">$24<small> / month</small></div>
+      <ul><li>Furnace tune-up and water heater flush</li><li>Priority booking, including after hours</li><li>No after-hours call-out fee</li><li>15% off repairs</li></ul>
+      <button class="btn" data-a="request" data-svc="Care plan">Ask about this plan</button></div>
+  </div>
+</div></section>
+
+<section class="block" id="quote"><div class="wrap quote">
+  <div>
+    <div class="head"><h2>Request service</h2><p class="muted">Tell us what you need and we will reply the same business day with a time to visit.</p></div>
+    <p class="note"><b>Water pouring out or no heat in the cold?</b> Do not wait for a reply. Call <a href="tel:+13065550147" style="font-weight:700">(306) 555-0147</a> so we can dispatch someone right away.</p>
+  </div>
+  <div class="form" id="formBox"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>&copy; 2026 Ironwood Plumbing &amp; Heating (fictional)</span><span>Business website demo built by Apolonix Tech</span></div></footer>
+<div class="mbar"><a class="btn hot" href="tel:+13065550147">Call now</a><a class="btn" href="#quote">Request service</a></div>
+
+<script>
+(function(){
+  var PHONE='(306) 555-0147';
+  var WATER=[
+    {n:'Leak and pipe repair',d:'Find the leak, repair or replace the pipe',p:'$189'},
+    {n:'Drain clearing',d:'Sinks, tubs and main lines',p:'$149'},
+    {n:'Water heater repair',d:'Tank and tankless, gas or electric',p:'$189'},
+    {n:'Water heater replacement',d:'Removal, install and haul-away',p:'Quote'},
+    {n:'Faucet and toilet installs',d:'Supply and install, or install only',p:'$129'}
+  ];
+  var HEAT=[
+    {n:'Furnace repair',d:'Diagnosis and repair, most parts on the truck',p:'$169'},
+    {n:'Furnace tune-up',d:'Clean, test and safety check',p:'$149'},
+    {n:'Furnace replacement',d:'Free in-home quote with options',p:'Free quote'},
+    {n:'Boiler service',d:'Annual service and repairs',p:'$199'}
+  ];
+  var ALLSVC=WATER.concat(HEAT).map(function(s){return s.n}).concat(['Care plan','Not sure yet']);
+  var TRIAGE=[
+    {id:'leak',label:'Burst or leaking pipe',level:'Emergency',svc:'Leak and pipe repair',
+     title:'Stop the water first',steps:['Shut off the main water valve. It is usually where the water line enters the house, near the meter.','Turn off the power to any wet area if you can reach the panel without standing in water.','Open a lower tap to drain the pipes, and move valuables out of the way.'],call:true},
+    {id:'heat',label:'No heat',level:'Urgent',svc:'Furnace repair',
+     title:'Quick checks before you call',steps:['Make sure the thermostat is set to Heat and above room temperature, and replace its batteries if it has them.','Check that the furnace switch and the breaker are on, and that the filter is not clogged.','If it still will not start, call us. Below -15 °C we treat no heat as an emergency.'],call:true},
+    {id:'hot',label:'No hot water',level:'Urgent',svc:'Water heater repair',
+     title:'Check these, then call',steps:['Electric tank: check the breaker. Gas tank: check that the pilot or ignition is lit.','Do not open the tank or panel.','If water is pooling around the tank, turn off the water supply to it and call us.'],call:true},
+    {id:'drain',label:'Slow or blocked drain',level:'Routine',svc:'Drain clearing',
+     title:'Try this first',steps:['Use a plunger. Skip chemical drain cleaners, because they can damage pipes and make the job unsafe.','If several drains are slow at once, the main line may be blocked.','Still stuck? Request a visit and we will clear it.'],call:false},
+    {id:'gas',label:'I smell gas',level:'Safety',svc:'',gas:true,
+     title:'Leave the building now',steps:['Get everyone out, including pets. Do not turn lights or switches on or off, and do not use anything that could spark.','From outside, call 911 or your gas utility\'s emergency number.','Do not go back in until the gas company says it is safe. Call us afterward if you need repairs.'],call:false}
+  ];
+  var FSA={
+    core:['S4N','S4P','S4R','S4S','S4T','S4V','S4W','S4X','S4Y','S4Z'],
+    outer:['S4A','S4H','S4L','S4M','S0G']
+  };
+
+  var $=function(id){return document.getElementById(id)};
+  var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+
+  /* triage */
+  var sel=null;
+  function renderTriage(){
+    $('tOpts').innerHTML=TRIAGE.map(function(t){return '<button class="tbtn'+(t.gas?' gas':'')+'" data-a="tri" data-id="'+t.id+'" aria-pressed="'+(sel===t.id)+'">'+esc(t.label)+'</button>'}).join('');
+    var t=TRIAGE.find(function(x){return x.id===sel});
+    if(!t){$('advice').innerHTML='';return}
+    var h='<div class="advice'+(t.gas||t.level==='Emergency'?' crit':'')+'"><span class="tag">'+t.level+'</span><h3>'+esc(t.title)+'</h3><ol>'+t.steps.map(function(s){return '<li>'+esc(s)+'</li>'}).join('')+'</ol>';
+    if(t.gas){h+='<p><b>Do not call us first.</b> Gas leaks need the emergency services and the gas utility.</p>'}
+    else{h+='<div class="row">'+(t.call?'<a class="btn hot sm" href="tel:+13065550147">Call '+PHONE+'</a>':'')+'<button class="btn sm'+(t.call?' ghost':'')+'" data-a="request" data-svc="'+esc(t.svc)+'">Request a visit</button></div>'}
+    $('advice').innerHTML=h+'</div>';
+  }
+
+  /* services */
+  function svcList(list,id){
+    $(id).innerHTML=list.map(function(s){return '<div class="svc"><div class="t"><b>'+esc(s.n)+'</b><span class="d">'+esc(s.d)+'</span></div><div class="p"><b>'+(/^\$/.test(s.p)?'from '+s.p:s.p)+'</b><br><button class="link" data-a="request" data-svc="'+esc(s.n)+'" aria-label="Request '+esc(s.n)+'">Request</button></div></div>'}).join('');
+  }
+
+  /* area checker */
+  function checkArea(raw){
+    var v=raw.trim().toUpperCase().replace(/\s+/g,'');
+    var el=$('areaRes');el.className='result';
+    if(!/^[A-Z]\d[A-Z]/.test(v)){el.textContent='Enter a postal code that starts like S4P.';return null}
+    var f=v.slice(0,3);
+    if(FSA.core.indexOf(f)>-1){el.className='result ok';el.innerHTML='<b>Yes, '+f+' is in our core area.</b><br>Scheduled visits within 1 to 2 business days. Emergency calls usually arrive within 2 hours.';return 'core'}
+    if(FSA.outer.indexOf(f)>-1){el.className='result ok';el.innerHTML='<b>Yes, '+f+' is in our extended area.</b><br>Scheduled visits within 2 to 3 business days, with a $50 travel fee. Emergency arrival is usually within 4 hours.';return 'outer'}
+    el.className='result warn';el.innerHTML='<b>'+f+' is outside our usual area.</b><br>Call '+PHONE+' and we will tell you if we can still help.';return 'out';
+  }
+
+  /* quote form */
+  var F={svc:'Not sure yet',when:'week',name:'',phone:'',email:'',postal:'',details:'',errors:{},sent:null};
+  function field(id,label,type,extra,opt){
+    var e=F.errors[id],v=F[id]||'';
+    var ctl=type==='textarea'?'<textarea id="q-'+id+'" rows="4">'+esc(v)+'</textarea>':'<input id="q-'+id+'" type="'+type+'" value="'+esc(v)+'"'+(extra||'')+(e?' aria-invalid="true" aria-describedby="e-'+id+'"':'')+'>';
+    return '<div class="field"><label for="q-'+id+'">'+label+(opt?' <span class="muted" style="font-weight:400">(optional)</span>':'')+'</label>'+ctl+(e?'<span class="err" id="e-'+id+'">'+e+'</span>':'')+'</div>';
+  }
+  function renderForm(){
+    var box=$('formBox');
+    if(F.sent){
+      var s=F.sent;
+      box.innerHTML='<div class="sent"><div class="tick" aria-hidden="true">&#10003;</div><h3 id="sentH" tabindex="-1">Request received, '+esc(s.name.split(' ')[0])+'</h3><div class="tkt">'+s.ticket+'</div>'+
+        '<p>'+(s.when==='now'?'<b>For an emergency, call '+PHONE+' now.</b> A form cannot dispatch a technician.':'We would reply the same business day with a time to visit.')+'</p>'+
+        '<dl class="recap"><div><dt>Service</dt><dd>'+esc(s.svc)+'</dd></div><div><dt>Timing</dt><dd>'+esc(s.whenLabel)+'</dd></div><div><dt>Phone</dt><dd>'+esc(s.phone)+'</dd></div>'+(s.postal?'<div><dt>Postal code</dt><dd>'+esc(s.postal)+'</dd></div>':'')+'</dl>'+
+        '<p class="muted" style="margin-bottom:18px">This is a demo, so nothing was sent.</p><button class="btn ghost" data-a="again">Send another request</button></div>';
+      return;
+    }
+    var WH=[['now','Emergency, I need help today'],['week','Within the next few days'],['flex','Flexible, just getting a quote']];
+    box.innerHTML='<form id="qForm" novalidate>'+
+      '<div class="field"><label for="q-svc">What do you need?</label><select id="q-svc">'+ALLSVC.map(function(o){return '<option'+(o===F.svc?' selected':'')+'>'+esc(o)+'</option>'}).join('')+'</select></div>'+
+      '<fieldset class="field"><legend>How soon?</legend><div class="when">'+WH.map(function(w){return '<label><input type="radio" name="when" value="'+w[0]+'"'+(F.when===w[0]?' checked':'')+'>'+w[1]+'</label>'}).join('')+'</div></fieldset>'+
+      '<div class="grid2">'+field('name','Your name','text',' autocomplete="name"')+field('phone','Phone','tel',' autocomplete="tel" inputmode="tel"')+'</div>'+
+      '<div class="grid2">'+field('email','Email','email',' autocomplete="email" inputmode="email"',true)+field('postal','Postal code','text',' autocomplete="postal-code" maxlength="7"',true)+'</div>'+
+      field('details','What is happening?','textarea','',true)+
+      '<button class="btn" type="submit" style="width:100%">Send request</button></form>';
+  }
+  function validate(){
+    var e={};
+    if(!F.name.trim())e.name='Enter your name.';
+    var digits=F.phone.replace(/\D/g,'');
+    if(!F.phone.trim())e.phone='Enter a phone number so we can reach you.';
+    else if(digits.length<10)e.phone='Enter a 10-digit phone number.';
+    if(F.email.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(F.email.trim()))e.email='Enter an email like name@example.com.';
+    F.errors=e;return !Object.keys(e).length;
+  }
+  function submitForm(){
+    if(!validate()){renderForm();var k=Object.keys(F.errors)[0],el=$('q-'+k);if(el)el.focus();return}
+    var labels={now:'Emergency, today',week:'Within a few days',flex:'Flexible'};
+    F.sent={ticket:'IW-'+(1000+Math.floor(Math.random()*9000)),name:F.name.trim(),svc:F.svc,when:F.when,whenLabel:labels[F.when],phone:F.phone.trim(),postal:F.postal.trim().toUpperCase()};
+    renderForm();var h=$('sentH');if(h)h.focus();
+  }
+  function request(svc){
+    if(F.sent){F.sent=null}
+    if(svc&&ALLSVC.indexOf(svc)>-1)F.svc=svc;
+    renderForm();
+    document.getElementById('quote').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    var n=$('q-name');if(n)setTimeout(function(){n.focus({preventScroll:true})},350);
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-a]');if(!t)return;
+    var a=t.dataset.a;
+    if(a==='tri'){var id=t.dataset.id;sel=sel===id?null:id;renderTriage();var nb=document.querySelector('[data-a=tri][data-id="'+id+'"]');if(nb)nb.focus()}
+    else if(a==='request'){request(t.dataset.svc)}
+    else if(a==='again'){F.sent=null;F.name='';F.phone='';F.email='';F.postal='';F.details='';F.errors={};renderForm()}
+  });
+  document.addEventListener('input',function(e){
+    var id=e.target.id;if(id&&id.indexOf('q-')===0){F[id.slice(2)]=e.target.value}
+  });
+  document.addEventListener('change',function(e){
+    if(e.target.name==='when')F.when=e.target.value;
+    if(e.target.id==='q-svc')F.svc=e.target.value;
+  });
+  document.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(e.target.id==='areaForm')checkArea($('fsa').value);
+    else if(e.target.id==='qForm')submitForm();
+  });
+
+  renderTriage();svcList(WATER,'svcWater');svcList(HEAT,'svcHeat');renderForm();
+})();
+</script>
+</body>
+</html>
