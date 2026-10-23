@@ -22,6 +22,7 @@ export const plans: Plan[] = [
     unit: "starting price",
     turnaround: "2–4 weeks",
     features: [
+      "Booking System",
       "Contact form",
       "Basic SEO setup",
       "Mobile-responsive design",
